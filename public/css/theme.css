@@ -51,6 +51,10 @@ table.no-thead thead {
     display: none;
 }
 
+.typeahead-results > tbody > tr:hover {
+    color: #21c2f8;
+}
+
 /* Navbars */
 
 .dropdown-menu > li > a:hover, 

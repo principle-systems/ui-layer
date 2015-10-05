@@ -4,7 +4,24 @@ import { Input, ButtonGroup, Button, Glyphicon }
   from 'react-bootstrap'
 
 const CustomerRegistrationForm = React.createClass({
+  getDefaultProps() {
+    return {
+      areas : [
+        {
+          id   : 1,
+          name : 'Global'
+        }
+      ],
+      priceCategories : [
+        {
+          id   : 1,
+          name : 'Default'
+        }
+      ]
+    }
+  },
   render() {
+    const { areas, priceCategories } = this.props
     return (
       <div>
         <Input 
@@ -21,6 +38,13 @@ const CustomerRegistrationForm = React.createClass({
           type        = 'text'
           label       = 'TIN'
           placeholder = 'Taxpayer identification number'
+          addonAfter  = {(
+            <a href='#' onClick={e => { e.preventDefault() }}>
+              <Glyphicon
+                style = {{color: '#3e3e3e'}}
+                glyph = 'remove' />
+            </a>
+          )}
         />
         <Input 
           type        = 'text'
@@ -31,23 +55,25 @@ const CustomerRegistrationForm = React.createClass({
           type        = 'select' 
           label       = 'Area' 
           placeholder = 'Select an area from the list'>
-            <option value='first'>
-              First
-            </option>
-            <option value='second'>
-              Second
-            </option>
+            {areas.map(item => {
+              return (
+                <option key={item.id} value={item.name}>
+                  {item.name}
+                </option>
+              )
+            })}
         </Input>
         <Input 
           type        = 'select' 
           label       = 'Price category' 
           placeholder = 'Select a price category from the list'>
-            <option value='first'>
-              First
-            </option>
-            <option value='second'>
-              Second
-            </option>
+            {priceCategories.map(item => {
+              return (
+                <option key={item.id} value={item.name}>
+                  {item.name}
+                </option>
+              )
+            })}
         </Input>
         <ButtonGroup>
           <Button bsStyle='primary'>

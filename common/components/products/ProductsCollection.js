@@ -1,49 +1,68 @@
 import React from 'react'
+import Grid  from '../Grid'
 
-import { Table, Tr, Td, Thead } 
-  from 'reactable'
 import { Input }
   from 'react-bootstrap'
 
 const products = [
   {
-    name   : 'Fresh bananas'
+    id       : 'products/1',
+    sku      : '001-bananas',
+    name     : 'Fresh bananas',
+    unitSize : ''
   },
   {
-    name   : 'Levitating cheeze'
+    id       : 'products/2',
+    sku      : '002-cheeze',
+    name     : 'Levitating cheeze',
+    unitSize : ''
   },
   {
-    name   : 'Particle accellerator'
+    id       : 'products/3',
+    sku      : '003-lhc',
+    name     : 'Particle accellerator',
+    unitSize : ''
   },
   {
-    name   : 'iPhone'
+    id       : 'products/4',
+    sku      : '004-phone',
+    name     : 'iPhone',
+    unitSize : ''
   },
   {
-    name   : 'Palak paneer'
+    id       : 'products/5',
+    sku      : '005-veg',
+    name     : 'Palak paneer',
+    unitSize : '1 portion'
   }
 ]
 
 const ProductsCollection = React.createClass({
   handleFilterChange(event) {
-    this.refs.table.filterBy(event.target.value)
+    this.refs.grid.filterBy(event.target.value)
+  },
+  handleRowSelected(item) {
+    location.hash = item.id
   },
   render() {
     return (
       <div>
-        <Input placeholder='Filter results' onChange={this.handleFilterChange} type='text' />
-        <Table 
-          ref             = 'table'
-          className       = 'table table-bordered no-default-filter'
-          columns         = {[
-            {
-              label : 'Name',
-              key   : 'name'
-            }
-          ]}
-          data            = {products}
-          itemsPerPage    = {10} 
-          pageButtonLimit = {5}
-          filterable      = {['name']} 
+        <Input 
+          placeholder     = 'Filter results'
+          onChange        = {this.handleFilterChange}
+          type            = 'text' />
+        <Grid
+          ref             = 'grid'
+          data            = {products} 
+          tableClassName  = 'table table-bordered'
+          columns         = {['sku', 'name', 'unitSize']}
+          filterColumns   = {['name']}
+          labels          = {{
+            'sku'      : 'SKU',
+            'name'     : 'Name',
+            'unitSize' : 'Unit size'
+          }} 
+          onRowSelected   = {this.handleRowSelected}
         />
       </div>
     )

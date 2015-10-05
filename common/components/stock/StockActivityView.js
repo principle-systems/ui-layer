@@ -1,25 +1,57 @@
 import React from 'react'
+import Grid  from '../Grid'
 
-import { Table, Tr, Td, Thead } 
-  from 'reactable'
 import { Input }
   from 'react-bootstrap'
 
 const stock = [
   {
-    time : 'Now'
+    'action'   : 'Order created',
+    'product'  : 'Frozen Acai Energiser',
+    'type'     : 'available',
+    'quantity' : 4
   },
   {
-    time : 'Now'
+    'action'   : 'Order created',
+    'product'  : 'Frozen Acai Energiser',
+    'type'     : 'available',
+    'quantity' : 4
   },
   {
-    time : 'Now'
+    'action'   : 'Order created',
+    'product'  : 'Frozen Acai Energiser',
+    'type'     : 'available',
+    'quantity' : 4
   },
   {
-    time : 'Now'
+    'action'   : 'Order created',
+    'product'  : 'Frozen Acai Energiser',
+    'type'     : 'available',
+    'quantity' : 4
   },
   {
-    time : 'Now'
+    'action'   : 'Order created',
+    'product'  : 'Frozen Acai Energiser',
+    'type'     : 'available',
+    'quantity' : 4
+  },
+  {
+    'action'   : 'Order created',
+    'product'  : 'Frozen Acai Energiser',
+    'type'     : 'available',
+    'quantity' : 4
+  },
+  {
+    'action'   : 'Order created',
+    'product'  : 'Frozen Acai Energiser',
+    'type'     : 'available',
+    'quantity' : 4
+  },
+  {
+    'action'   : 'Order created',
+    'product'  : 'Frozen Acai Energiser',
+    'type'     : 'available',
+    'quantity' : 4
   }
 ]
 
@@ -27,19 +59,17 @@ const StockActivityView = React.createClass({
   render() {
     return (
       <div>
-        <Table 
-          ref             = 'table'
-          className       = 'table table-bordered'
-          columns         = {[
-            {
-              label : 'Time',
-              key   : 'time'
-            }
-          ]}
-          data            = {stock}
-          itemsPerPage    = {10} 
-          pageButtonLimit = {5}
-        />
+        <Grid
+          ref             = 'grid'
+          columns         = {['action', 'product', 'type', 'quantity']}
+          labels          = {{
+            'action'   : 'Action',
+            'product'  : 'Product',
+            'type'     : 'Quantity changed',
+            'quantity' : 'Change incurred'
+          }}
+          tableClassName  = 'table table-bordered'
+          data            = {stock} />
       </div>
     )
   }

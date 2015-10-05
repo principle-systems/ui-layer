@@ -16,6 +16,56 @@ import { Route, RouteHandler }
 import { Tabs, Tab, Panel }
   from 'react-bootstrap'
 
+const RouteProductItem = React.createClass({
+  render() {
+    return (
+      <div>
+        show product {'' + this.props.params.id}
+      </div>
+    )
+  }
+})
+
+const RouteOrderItem = React.createClass({
+  render() {
+    return (
+      <div>
+        show order {'' + this.props.params.id}
+      </div>
+    )
+  }
+})
+
+const RouteTaskItem = React.createClass({
+  render() {
+    return (
+      <div>
+        show task {'' + this.props.params.id}
+      </div>
+    )
+  }
+})
+
+const RouteComplaintItem = React.createClass({
+  render() {
+    return (
+      <div>
+        show complaint {'' + this.props.params.id}
+      </div>
+    )
+  }
+})
+
+const RouteCustomerItem = React.createClass({
+  render() {
+    return (
+      <div>
+        show customer {'' + this.props.params.id}
+      </div>
+    )
+  }
+})
+
 const RouteCustomers = React.createClass({
   getInitialState() {
     return {
@@ -222,13 +272,18 @@ const Handler = React.createClass({
 
 const routes = (
   <Route handler={Handler}>
-    <Route path ='customers'          handler={RouteCustomers}   />
-    <Route path ='complaints'         handler={RouteComplaints}  />
-    <Route path ='orders'             handler={RouteOrders}      />
-    <Route path ='products'           handler={RouteProducts}    />
-    <Route path ='stock'              handler={RouteStock}       />
-    <Route path ='tasks'              handler={RouteTasks}       />
-    <Route path ='performance'        handler={RoutePerformance} />
+    <Route path ='products/:id'       handler={RouteProductItem}   />
+    <Route path ='orders/:id'         handler={RouteOrderItem}     />
+    <Route path ='tasks/:id'          handler={RouteTaskItem}      />
+    <Route path ='complaints/:id'     handler={RouteComplaintItem} />
+    <Route path ='customers/:id'      handler={RouteCustomerItem}  />
+    <Route path ='customers'          handler={RouteCustomers}     />
+    <Route path ='complaints'         handler={RouteComplaints}    />
+    <Route path ='orders'             handler={RouteOrders}        />
+    <Route path ='products'           handler={RouteProducts}      />
+    <Route path ='stock'              handler={RouteStock}         />
+    <Route path ='tasks'              handler={RouteTasks}         />
+    <Route path ='performance'        handler={RoutePerformance}   />
   </Route>
 )
 
