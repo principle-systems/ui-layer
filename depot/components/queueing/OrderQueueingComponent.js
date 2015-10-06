@@ -1,56 +1,154 @@
 import React from 'react'
 import Grid  from '../../../common/components/Grid'
+import OrderSelection from './OrderSelection'
 
-import { Input }
+import { Input, Row, Col, Button }
   from 'react-bootstrap'
+
+const areas = [
+  {
+    id   : 'areas/1',
+    name : 'Area #1'
+  },
+  {
+    id   : 'areas/2',
+    name : 'Area #2'
+  },
+  {
+    id   : 'areas/3',
+    name : 'Area #3'
+  }
+]
 
 const vehicles = [
   {
-    id    : 'vehicles/1',
-    regNo : 'abc-123'
+    id          : 'vehicles/1',
+    regNo       : 'abc-123',
+    make        : 'Toyota',
+    model       : 'test',
+    driver      : 'Bob',
+    weightClass : 'Class A'
   },
   {
-    id    : 'vehicles/2',
-    regNo : 'efg-456'
+    id          : 'vehicles/2',
+    regNo       : 'efg-456',
+    make        : 'Toyota',
+    model       : 'test',
+    driver      : 'Bob',
+    weightClass : 'Class A'
   },
   {
-    id    : 'vehicles/3',
-    regNo : 'xyz-456'
+    id          : 'vehicles/3',
+    regNo       : 'xyz-456',
+    make        : 'Toyota',
+    model       : 'test',
+    driver      : 'Bob',
+    weightClass : 'Class A'
   },
   {
-    id    : 'vehicles/4',
-    regNo : 'ddd-456'
+    id          : 'vehicles/4',
+    regNo       : 'ddd-456',
+    make        : 'Toyota',
+    model       : 'test',
+    driver      : 'Bob',
+    weightClass : 'Class A'
   },
   {
-    id    : 'vehicles/5',
-    regNo : 'yyy-456'
+    id          : 'vehicles/5',
+    regNo       : 'yyy-456',
+    make        : 'Toyota',
+    model       : 'test',
+    driver      : 'Bob',
+    weightClass : 'Class A'
   }
 ]
 
 const OrderQueueingComponent = React.createClass({
+  getDefaultProps() {
+    return {
+      areas : areas
+    }
+  },
+  getInitialState() {
+    return {
+      vehicle : null,
+      area    : null
+    }
+  },
   handleFilterChange(event) {
     this.refs.grid.filterBy(event.target.value)
   },
-  handleRowSelected(item) {
-    console.log('Selected vehicle : ' + item.id)
+  handleVehicleSelected(vehicle) {
+    this.setState({vehicle})
+  },
+  handleAreaSelected(event) {
+    this.setState({
+      area : event.target.value
+    })
+  },
+  restart() {
+    this.setState(this.getInitialState())
   },
   render() {
+    const { areas } = this.props
+    const { vehicle, area } = this.state
     return (
       <div>
-        <Input 
-          placeholder     = 'Filter results' 
-          onChange        = {this.handleFilterChange} 
-          type            = 'text' />
-        <Grid
-          ref             = 'grid'
-          tableClassName  = 'table table-bordered'
-          columns         = {['regNo']}
-          filterColumns   = {['regNo']}
-          labels          = {{
-            'regNo' : 'Registration number'
-          }}
-          onRowSelected   = {this.handleRowSelected}
-          data            = {vehicles} />
+        {!vehicle && (
+          <div>
+            <Input 
+              placeholder     = 'Filter results' 
+              onChange        = {this.handleFilterChange} 
+              type            = 'text' />
+            <Grid
+              ref             = 'grid'
+              tableClassName  = 'table table-bordered table-hover'
+              columns         = {['regNo', 'make', 'model', 'driver', 'weightClass']}
+              filterColumns   = {['regNo', 'make', 'model', 'driver']}
+              labels          = {{
+                'regNo'       : 'Registration number',
+                'make'        : 'Make',
+                'model'       : 'Model',
+                'driver'      : 'Driver',
+                'weightClass' : 'Weight class'
+              }}
+              onRowSelected   = {this.handleVehicleSelected}
+              data            = {vehicles} />
+          </div>
+        )}
+        {vehicle && (
+          <div>
+            <div>
+              <Row>
+                <Col xs={6}>
+                  <Input disabled type='text' value={vehicle.regNo} />
+                </Col>
+                <Col xs={6}>
+                  <Button block onClick={this.restart}>
+                    Cancel 
+                  </Button>
+                </Col>
+              </Row>
+            </div>
+            <Input type='select' onChange={this.handleAreaSelected}>
+              <option value={''}>
+                Please select an area
+              </option>
+              {areas.map(item => {
+                return (
+                  <option 
+                    key   = {item.id}
+                    value = {item.id}>
+                      {item.name}
+                  </option>
+                )
+              })}
+            </Input>
+          </div>
+        )}
+        {vehicle && area && (
+          <OrderSelection area={area} />
+        )}
       </div>
     )
   }

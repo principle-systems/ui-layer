@@ -22,7 +22,11 @@ const TypeaheadResults = React.createClass({
                 key     = {options.indexOf(item)} 
                 onClick = {() => onOptionSelected(item)}
                 style   = {{cursor : 'pointer'}}>
-                  <td>{item}</td>
+                  <td>
+                    <span style={{marginLeft: '.5em'}}>
+                      {item}
+                    </span>
+                  </td>
               </tr>
             )
           })}

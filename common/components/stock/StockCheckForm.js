@@ -1,7 +1,7 @@
 import React from 'react'
 import Grid  from '../Grid'
 
-import { Input, Modal, Button }
+import { Input, Modal, Button, Glyphicon, Row, Col }
   from 'react-bootstrap'
 
 const stock = [
@@ -66,10 +66,15 @@ const StockCheckForm = React.createClass({
               <Modal.Title>Stock check</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              123
+              <Input 
+                label       = 'Quantity'
+                placeholder = 'Quantity'
+                type        = 'number' />
             </Modal.Body>
             <Modal.Footer>
-              <Button block bsStyle='primary'>Save changes</Button>
+              <Button block bsStyle='primary'>
+                <Glyphicon glyph='ok' />Save changes
+              </Button>
             </Modal.Footer>
           </Modal>
         )}
@@ -79,7 +84,7 @@ const StockCheckForm = React.createClass({
           type            = 'text' />
         <Grid
           ref             = 'grid'
-          tableClassName  = 'table table-bordered'
+          tableClassName  = 'table table-bordered table-hover'
           columns         = {['product', 'available', 'actual']}
           labels          = {{
             'product'   : 'Product',

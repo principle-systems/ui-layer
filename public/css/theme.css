@@ -52,7 +52,8 @@ table.no-thead thead {
 }
 
 .typeahead-results > tbody > tr:hover {
-    color: #21c2f8;
+    background-color: #21c2f8 !important;
+    color: #fff;
 }
 
 /* Navbars */

@@ -27,11 +27,17 @@ const Grid = React.createClass({
     })
   },
   compile(items) {
+    if (!items || !items.length) {
+      return {
+        items     : [],
+        pageCount : 1
+      }
+    }
     const { itemsPerPage, filterColumns } = this.props
     const { page, filterBy } = this.state
     const filteredItems = (!filterBy || !filterColumns || !filterColumns.length) ? items : items.filter(item => {
       for (let i = 0; i < filterColumns.length; i++) {
-        if (item[filterColumns[i]].toLowerCase().indexOf(filterBy.toLowerCase()) > -1) {
+        if (String(item[filterColumns[i]]).toLowerCase().indexOf(filterBy.toLowerCase()) > -1) {
           return true
         }
       }
@@ -53,10 +59,17 @@ const Grid = React.createClass({
     const { data, columns, labels, onRowSelected, tableClassName } = this.props
     const { items, pageCount } = this.compile(data) 
     let i = 1
+    if (!items.length) {
+      return (
+        <span style={{color : '#aaa'}}>
+          <Glyphicon glyph='remove' />&nbsp;There are no results to show.
+        </span>
+      )
+    }
     return (
       <div>
         <table className={tableClassName}>
-          {labels && !!items.length && (
+          {labels && (
             <thead>
               <tr>
                 {columns.map(column => {
@@ -70,7 +83,7 @@ const Grid = React.createClass({
             </thead>
           )}
           <tbody>
-            {items.length ? items.map(item => {
+            {items.map(item => {
               const cells = columns.map(column => {
                 return (
                   <td key={column}>
@@ -83,15 +96,7 @@ const Grid = React.createClass({
               ) : (
                 <tr key={i++}>{cells}</tr>
               )
-            }) : (
-              <tr>
-                <td colSpan={columns.length}>
-                  <span style={{color : '#aaa'}}>
-                    <Glyphicon glyph='remove' />&nbsp;No results
-                  </span>
-                </td>
-              </tr>
-            )}
+            })}
           </tbody>
         </table>
         {pageCount > 1 && (

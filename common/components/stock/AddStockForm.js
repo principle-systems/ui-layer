@@ -20,7 +20,7 @@ const AddStockForm = React.createClass({
     return (
       <div>
         <Row>
-          <Col xs={6}>
+          <Col sm={8}>
             <div className='form-group'>
               <label>Product</label>
               <Typeahead
@@ -32,36 +32,17 @@ const AddStockForm = React.createClass({
                 customListComponent = {TypeaheadResults} />
             </div>
           </Col>
-          <Col xs={6}>
+          <Col sm={4}>
             <div>
               <Input 
                 label               = 'Quantity'
                 placeholder         = 'Quantity'
-                type                = 'text' 
-                addonBefore         = {(
-                  <a href='#' onClick={e => { e.preventDefault() }}>
-                    <Glyphicon
-                      style = {{color: '#3e3e3e'}}
-                      glyph = 'minus' />
-                  </a>
-                )}
-                addonAfter          = {(
-                  <a href='#' onClick={e => { e.preventDefault() }}>
-                    <Glyphicon
-                      style = {{color: '#3e3e3e'}}
-                      glyph = 'plus' />
-                  </a>
-                )} />
+                type                = 'number' />
             </div>
           </Col>
         </Row>
-
-        <div>
-          <RcSlider min={1} max={100} />
-        </div>
-
         <Button bsStyle='primary' block>
-          Add stock
+          <Glyphicon glyph='ok' />Add stock
         </Button>
       </div>
     )

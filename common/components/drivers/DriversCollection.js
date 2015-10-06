@@ -6,19 +6,24 @@ import { Input }
 
 const drivers = [
   {
-    name : 'Abdul'
+    name    : 'Abdul',
+    vehicle : 'abc-123'
   },
   {
-    name : 'Baraka'
+    name    : 'Baraka',
+    vehicle : 'abc-123'
   },
   {
-    name : 'Deo'
+    name    : 'Deo',
+    vehicle : 'abc-123'
   },
   {
-    name : 'Ernest'
+    name    : 'Ernest',
+    vehicle : 'abc-123'
   },
   {
-    name : 'George'
+    name    : 'George',
+    vehicle : 'abc-123'
   }
 ]
 
@@ -36,10 +41,11 @@ const DriversCollection = React.createClass({
         <Grid
           ref             = 'grid'
           tableClassName  = 'table table-bordered'
-          filterColumns   = {['name']}
-          columns         = {['name']}
+          filterColumns   = {['name', 'vehicle']}
+          columns         = {['name', 'vehicle']}
           labels          = {{
-            'name' : 'Name'
+            'name'    : 'Name',
+            'vehicle' : 'Vehicle'
           }}
           data            = {drivers} />
       </div>

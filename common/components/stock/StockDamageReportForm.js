@@ -15,11 +15,34 @@ const products = [
 ]
 
 const StockDamageReportForm = React.createClass({
+  getDefaultProps() {
+    return {
+      damageTypes : [
+        {
+          id   : 'damages/1',
+          name : 'Fire'
+        },
+        {
+          id   : 'damages/2',
+          name : 'Explosion'
+        },
+        {
+          id   : 'damages/3',
+          name : 'Water'
+        },
+        {
+          id   : 'damages/4',
+          name : 'Impact'
+        }
+      ]
+    }
+  },
   render() {
+    const { damageTypes } = this.props
     return (
       <div>
         <Row>
-          <Col xs={6}>
+          <Col sm={8}>
             <div className='form-group'>
               <label>Product</label>
               <Typeahead
@@ -31,41 +54,30 @@ const StockDamageReportForm = React.createClass({
                 customListComponent = {TypeaheadResults} />
             </div>
           </Col>
-          <Col xs={6}>
+          <Col sm={4}>
             <Input 
               label               = 'Quantity'
               placeholder         = 'Quantity'
-              type                = 'text' 
-              addonBefore         = {(
-                <a href='#' onClick={e => { e.preventDefault() }}>
-                  <Glyphicon
-                    style = {{color: '#3e3e3e'}}
-                    glyph = 'minus' />
-                </a>
-              )}
-              addonAfter          = {(
-                <a href='#' onClick={e => { e.preventDefault() }}>
-                  <Glyphicon
-                    style = {{color: '#3e3e3e'}}
-                    glyph = 'plus' />
-                </a>
-              )} />
+              type                = 'number' />
           </Col>
         </Row>
         <Input 
           label       = 'Type of damage'
           type        = 'select'>
-            <option>Fire</option>
-            <option>Explosion</option>
-            <option>Water</option>
-            <option>Impact</option>
+            {damageTypes.map(item => {
+              return (
+                <option key={item.id} value={item.name}>
+                  {item.name}
+                </option>
+              )
+            })}
         </Input>
         <Input 
           label       = 'Comment'
           placeholder = 'Provide a short description of the damage'
           type        = 'textarea' />
         <Button bsStyle='primary' block>
-          Submit
+          <Glyphicon glyph='ok' />Submit
         </Button>
       </div>
     )

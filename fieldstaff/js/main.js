@@ -1,20 +1,29 @@
-import React                  from 'react'
-import Router                 from 'react-router'
-import NavComponent           from '../../common/components/NavComponent'
-import CustomersCollection    from '../../common/components/customers/CustomersCollection'
-import PageWrapper            from '../../common/components/PageWrapper'
+import React                    from 'react'
+import Router                   from 'react-router'
+import NavComponent             from '../../common/components/NavComponent'
+import CustomersCollection      from '../../common/components/customers/CustomersCollection'
+import PageWrapper              from '../../common/components/PageWrapper'
 import CustomerRegistrationForm from '../../common/components/customers/CustomerRegistrationForm'
-import ComplaintsCollection   from '../../common/components/complaints/ComplaintsCollection'
-import OrdersCollection       from '../../common/components/orders/OrdersCollection'
-import ProductsCollection     from '../../common/components/products/ProductsCollection'
-import StockSummary           from '../../common/components/stock/StockSummary'
-import StockActivityView      from '../../common/components/stock/StockActivityView'
-import TasksCollection        from '../../common/components/tasks/TasksCollection'
+import ComplaintsCollection     from '../../common/components/complaints/ComplaintsCollection'
+import OrdersCollection         from '../../common/components/orders/OrdersCollection'
+import ProductsCollection       from '../../common/components/products/ProductsCollection'
+import StockSummary             from '../../common/components/stock/StockSummary'
+import StockActivityView        from '../../common/components/stock/StockActivityView'
+import TasksCollection          from '../../common/components/tasks/TasksCollection'
+import Device                   from '../../common/js/device'
+import app                      from './reducers'
 
 import { Route, RouteHandler }  
   from 'react-router'
+import { createStore } 
+  from 'redux'
+import { Provider }     
+  from 'react-redux'
 import { Tabs, Tab, Panel }
   from 'react-bootstrap'
+
+const store  = createStore(app)
+const device = new Device('depot')
 
 const RouteProductItem = React.createClass({
   render() {
@@ -77,16 +86,63 @@ const RouteCustomersItem = React.createClass({
   }
 })
 
+const customers = [
+  {
+    id          : 'customers/1',
+    name        : 'Customer A',
+    address     : 'Main street 1',
+    phoneNumber : '123'
+  },
+  {
+    id          : 'customers/2',
+    name        : 'Customer B',
+    address     : 'Side street',
+    phoneNumber : '123'
+  },
+  {
+    id          : 'customers/3',
+    name        : 'Customer C',
+    address     : 'Madison Sq. Garden',
+    phoneNumber : '123'
+  },
+  {
+    id          : 'customers/4',
+    name        : 'Customer D',
+    address     : 'Green Acres 5',
+    phoneNumber : '123'
+  },
+  {
+    id          : 'customers/5',
+    name        : 'Customer E',
+    address     : 'Grand central station',
+    phoneNumber : '123'
+  }
+]
+
 const RouteCustomers = React.createClass({
   getInitialState() {
     return {
-      key : 1
+      key       : 1,
+      customers : []
     }
   },
   handleSelect(key) {
     this.setState({key})
   },
+  fetchCustomers() {
+    this.setState({
+      customers : device.fetchAll('customers')
+    })
+  },
+  componentDidMount() {
+    this.fetchCustomers()
+    device.on('change', this.fetchCustomers)
+  },
+  componentWillUnmount() {
+    device.removeListener('change', this.fetchCustomers)
+  },
   render() {
+    const { key, customers } = this.state
     return (
       <Panel
         className = 'panel-fill'
@@ -94,11 +150,11 @@ const RouteCustomers = React.createClass({
         header    = 'Customers'>
           <Tabs fill
             animation = {false}
-            activeKey = {this.state.key}
+            activeKey = {key}
             onSelect  = {this.handleSelect}>
               <Tab eventKey={1} title='All customers'>
                 <Panel>
-                  <CustomersCollection />
+                  <CustomersCollection data={customers} />
                 </Panel>
               </Tab>
               <Tab eventKey={2} title='Register new customer'>
@@ -298,14 +354,23 @@ const routes = (
   </Route>
 )
 
-Router.run(routes, Router.HashLocation, (Root) => {
+Router.run(routes, Router.HashLocation, (Root, routerState) => {
   React.render(
-    <div>
-      {/*
-      <NotificationComponent />
-      */}
-      <Root />
-    </div>,
+    <Provider store={store}>
+      {() => <Root routerState={routerState} />}
+    </Provider>,
     document.getElementById('main')
   )
 })
+
+//Router.run(routes, Router.HashLocation, (Root) => {
+//  React.render(
+//    <div>
+//      {/*
+//      <NotificationComponent />
+//      */}
+//      <Root />
+//    </div>,
+//    document.getElementById('main')
+//  )
+//})
