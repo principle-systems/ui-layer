@@ -4,40 +4,12 @@ import Grid  from '../Grid'
 import { Input }
   from 'react-bootstrap'
 
-const products = [
-  {
-    id       : 'products/1',
-    sku      : '001-bananas',
-    name     : 'Fresh bananas',
-    unitSize : ''
-  },
-  {
-    id       : 'products/2',
-    sku      : '002-cheeze',
-    name     : 'Levitating cheeze',
-    unitSize : ''
-  },
-  {
-    id       : 'products/3',
-    sku      : '003-lhc',
-    name     : 'Particle accellerator',
-    unitSize : ''
-  },
-  {
-    id       : 'products/4',
-    sku      : '004-phone',
-    name     : 'iPhone',
-    unitSize : ''
-  },
-  {
-    id       : 'products/5',
-    sku      : '005-veg',
-    name     : 'Palak paneer',
-    unitSize : '1 portion'
-  }
-]
-
 const ProductsCollection = React.createClass({
+  getDefaultProps() {
+    return {
+      data : []
+    }
+  },
   handleFilterChange(event) {
     this.refs.grid.filterBy(event.target.value)
   },
@@ -45,6 +17,7 @@ const ProductsCollection = React.createClass({
     location.hash = item.id
   },
   render() {
+    const { data } = this.props
     return (
       <div>
         <Input 
@@ -53,7 +26,7 @@ const ProductsCollection = React.createClass({
           type            = 'text' />
         <Grid
           ref             = 'grid'
-          data            = {products} 
+          data            = {data} 
           tableClassName  = 'table table-bordered'
           columns         = {['sku', 'name', 'unitSize']}
           filterColumns   = {['name']}

@@ -1,7 +1,8 @@
-import React from 'react'
-import Grid  from '../Grid'
+import React         from 'react'
+import Grid          from '../Grid'
+import ComplaintView from './ComplaintView'
 
-import { Input }
+import { Input, Modal, Button }
   from 'react-bootstrap'
 
 const complaints = [
@@ -48,15 +49,39 @@ const complaints = [
 ]
 
 const ComplaintsCollection = React.createClass({
+  getInitialState() {
+    return {
+      complaint : null
+    }
+  },
   handleFilterChange(event) {
     this.refs.grid.filterBy(event.target.value)
   },
-  handleRowSelected(item) {
-    location.hash = item.id
+  handleRowSelected(complaint) {
+    this.setState({complaint})
+  },
+  hideModal() {
+    this.setState({
+      complaint : null
+    })
   },
   render() {
+    const { complaint } = this.state
     return (
       <div>
+        <Modal show={!!this.state.complaint} onHide={this.hideModal}>
+          <Modal.Header closeButton={true}>
+            <Modal.Title>Complaint details</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <ComplaintView complaint={complaint} />
+          </Modal.Body>
+          <Modal.Footer>
+            <Button block bsStyle='primary' onClick={this.hideModal}>
+              Ok
+            </Button>
+          </Modal.Footer>
+        </Modal>
         <Input 
           placeholder     = 'Filter results' 
           onChange        = {this.handleFilterChange} 

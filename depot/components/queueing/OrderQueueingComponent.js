@@ -100,6 +100,7 @@ const OrderQueueingComponent = React.createClass({
               placeholder     = 'Filter results' 
               onChange        = {this.handleFilterChange} 
               type            = 'text' />
+            <h4>Available vehicles</h4>
             <Grid
               ref             = 'grid'
               tableClassName  = 'table table-bordered table-hover'

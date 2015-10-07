@@ -96,6 +96,10 @@ class Device extends EventEmitter {
     this._namespace = namespace
   }
 
+  fetch(item) {
+    return StorageItem.fetch(item, this)
+  }
+
   fetchAll(resource) {
     return Collection.fetchAll(resource, this)
   }
@@ -132,6 +136,10 @@ class Device extends EventEmitter {
 
   clearStorage() {
     localStorage.clear()
+  }
+
+  notify(message) {
+    this.emit('notification', message)
   }
 
 }

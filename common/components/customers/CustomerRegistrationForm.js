@@ -69,6 +69,7 @@ const CustomerRegistrationForm = React.createClass({
         />
         <Input {...area}
           type        = 'select' 
+          value       = ''
           help        = {this.hint('area')}
           label       = 'Area' 
           bsStyle     = {this.hint('area') ? 'error' : area.touched ? 'success' : null} 
@@ -88,6 +89,7 @@ const CustomerRegistrationForm = React.createClass({
         </Input>
         <Input {...priceCategory}
           type        = 'select' 
+          value       = ''
           help        = {this.hint('priceCategory')}
           label       = 'Price category' 
           bsStyle     = {this.hint('priceCategory') ? 'error' : priceCategory.touched ? 'success' : null} 
@@ -110,7 +112,7 @@ const CustomerRegistrationForm = React.createClass({
           <Button bsStyle='primary'>
             <Glyphicon glyph='ok' />Save
           </Button>
-          <Button bsStyle='default'>
+          <Button onClick={this.props.resetForm} bsStyle='default'>
             Reset
           </Button>
         </ButtonGroup>
@@ -140,7 +142,7 @@ function validateCustomer(data) {
 }
 
 export default connectReduxForm({
-  form     : 'contact',
+  form     : 'customer',
   fields   : ['name', 'address', 'tin', 'phone', 'area', 'priceCategory'],
   validate : validateCustomer
 })(CustomerRegistrationForm)
