@@ -1,7 +1,8 @@
-import React from 'react'
-import Grid  from '../Grid'
+import React           from 'react'
+import Grid            from '../Grid'
+import TaskView        from './TaskView'
 
-import { Input }
+import { Input, Modal, Button }
   from 'react-bootstrap'
 
 const tasks = [
@@ -28,15 +29,39 @@ const tasks = [
 ]
 
 const TasksCollection = React.createClass({
+  getInitialState() {
+    return {
+      task : null
+    }
+  },
   handleFilterChange(event) {
     this.refs.grid.filterBy(event.target.value)
   },
-  handleRowSelected(item) {
-    location.hash = item.id
+  handleRowSelected(task) {
+    this.setState({task})
+  },
+  hideModal() {
+    this.setState({
+      task : null
+    })
   },
   render() {
+    const { task } = this.props
     return (
       <div>
+        <Modal show={!!this.state.task} onHide={this.hideModal}>
+          <Modal.Header closeButton={true}>
+            <Modal.Title>Task details</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <TaskView task={task} />
+          </Modal.Body>
+          <Modal.Footer>
+            <Button block bsStyle='primary' onClick={this.hideModal}>
+              Ok
+            </Button>
+          </Modal.Footer>
+        </Modal>
         <Input 
           placeholder     = 'Filter results' 
           onChange        = {this.handleFilterChange} 

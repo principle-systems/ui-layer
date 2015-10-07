@@ -4,20 +4,75 @@ import OrdersCollection     from '../orders/OrdersCollection'
 import TasksCollection      from '../tasks/TasksCollection'
 import ComplaintsCollection from '../complaints/ComplaintsCollection'
 
-import { Panel, Tabs, Tab, ButtonGroup, DropdownButton, Button, MenuItem, Glyphicon, Table, Label }
+import { Panel, Tabs, Tab, ButtonGroup, DropdownButton, Button, MenuItem, Glyphicon, Table, Label, Modal, Breadcrumb, BreadcrumbItem }
   from 'react-bootstrap'
 
+const CustomerActivityModal = React.createClass({
+  render() {
+    const { action, onHide } = this.props
+    switch (action) {
+      case 'call-activity-1':
+      case 'call-activity-2':
+      case 'call-activity-3':
+      case 'call-activity-4':
+      case 'call-activity-5':
+      case 'call-activity-6':
+      case 'customer-visit-1':
+      case 'customer-visit-2':
+      case 'customer-visit-3':
+      case 'customer-visit-4':
+      case 'customer-visit-5':
+      case 'customer-visit-6':
+        return (
+          <Modal show={!!action} onHide={onHide}>
+            <Modal.Header closeButton={true}>
+              <Modal.Title>Complaint details</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              hello
+            </Modal.Body>
+            <Modal.Footer>
+              <Button block bsStyle='primary' onClick={onHide}>
+                Ok
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        )
+      default:
+        return <span />
+    }
+  }
+})
+
 const CustomerInfo = React.createClass({
+  getInitialState() {
+    return {
+      action : null
+    }
+  },
+  hideModal() {
+    this.setState({
+      action : null
+    })
+  },
+  handleDropdownSelect(event, action) {
+    this.setState({action})
+  },
   render() {
     const { customer } = this.props
+    const { action } = this.state
     return (
       <div>
+        <CustomerActivityModal onHide={this.hideModal} action={action} />
         <h3>{customer.name}</h3>
         <hr />
         <ButtonGroup 
           className  = 'pull-right'
           style      = {{marginTop: '-5.5em'}}>
-          <DropdownButton id='call-activity-select' title={(
+          <DropdownButton 
+            id       = 'call-activity-select'
+            onSelect = {this.handleDropdownSelect}
+            title    = {(
             <span>
               <Glyphicon glyph='earphone' />Call activity
             </span>
@@ -29,7 +84,10 @@ const CustomerInfo = React.createClass({
             <MenuItem eventKey='call-activity-5'>Schedule callback</MenuItem>
             <MenuItem eventKey='call-activity-6'>No action</MenuItem>
           </DropdownButton>
-          <DropdownButton id='customer-visit-select' title={(
+          <DropdownButton 
+            id       = 'customer-visit-select'
+            onSelect = {this.handleDropdownSelect}
+            title    = {(
             <span>
               <Glyphicon glyph='home' />Customer visit
             </span>
@@ -79,16 +137,14 @@ const CustomerView = React.createClass({
     }
     return (
       <div>
-        <ol className='breadcrumb'>
-          <li>
-            <a href='#/customers'>
-              Customers
-            </a>
-          </li>
-          <li className='active'>
+        <Breadcrumb>
+          <BreadcrumbItem href='#/customers'>
+            Customers
+          </BreadcrumbItem>
+          <BreadcrumbItem active>
             {customer.name}
-          </li>
-        </ol>
+          </BreadcrumbItem>
+        </Breadcrumb>
         <div>
           <CustomerInfo customer={customer} />
         </div>

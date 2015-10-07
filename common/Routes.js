@@ -50,6 +50,8 @@ export const RouteCustomerEdit = React.createClass({
   componentDidMount() {
     const { device, params } = this.props
     const customer = device.fetch(`customers/${params.id}`)
+    customer.latitude  = customer.position.latitude
+    customer.longitude = customer.position.longitude
     this.props.dispatch(initialize('customer', customer))
   },
   render() {
@@ -58,7 +60,7 @@ export const RouteCustomerEdit = React.createClass({
         className   = 'panel-fill'
         bsStyle     = 'primary'
         header      = 'Customers'>
-        <CustomerRegistrationForm />
+        <CustomerRegistrationForm edit={true} />
       </Panel>
     )
   }
@@ -154,11 +156,24 @@ export const RouteCustomers = React.createClass({
 export const RouteOrders = React.createClass({
   getInitialState() {
     return {
-      key : 1
+      key    : 1,
+      orders : []
     }
   },
   handleSelect(key) {
     this.setState({key})
+  },
+  fetchOrders() {
+    this.setState({
+      customers : this.props.device.fetchAll('orders')
+    })
+  },
+  componentDidMount() {
+    this.fetchOrders()
+    this.props.device.on('change', this.fetchOrders)
+  },
+  componentWillUnmount() {
+    this.props.device.removeListener('change', this.fetchOrders)
   },
   render() {
     return (

@@ -1,41 +1,41 @@
 import React from 'react'
 import Grid  from '../Grid'
 
-import { Input }
+import { Input, Modal, Button }
   from 'react-bootstrap'
 
-const orders = [
-  {
-    id       : 'orders/1',
-    customer : 'Abdul',
-    user     : 'Bob',
-    created  : Date.now()
-  },
-  {
-    id       : 'orders/2',
-    customer : 'Baraka',
-    user     : 'Bob',
-    created  : Date.now()
-  },
-  {
-    id       : 'orders/3',
-    customer : 'Deo',
-    user     : 'Bob',
-    created  : Date.now()
-  },
-  {
-    id       : 'orders/4',
-    customer : 'Ernest',
-    user     : 'Bob',
-    created  : Date.now()
-  },
-  {
-    id       : 'orders/5',
-    customer : 'George',
-    user     : 'Bob',
-    created  : Date.now()
-  }
-]
+//const orders = [
+//  {
+//    id       : 'orders/1',
+//    customer : 'Abdul',
+//    user     : 'Bob',
+//    created  : Date.now()
+//  },
+//  {
+//    id       : 'orders/2',
+//    customer : 'Baraka',
+//    user     : 'Bob',
+//    created  : Date.now()
+//  },
+//  {
+//    id       : 'orders/3',
+//    customer : 'Deo',
+//    user     : 'Bob',
+//    created  : Date.now()
+//  },
+//  {
+//    id       : 'orders/4',
+//    customer : 'Ernest',
+//    user     : 'Bob',
+//    created  : Date.now()
+//  },
+//  {
+//    id       : 'orders/5',
+//    customer : 'George',
+//    user     : 'Bob',
+//    created  : Date.now()
+//  }
+//]
 
 const OrdersCollection = React.createClass({
   handleFilterChange(event) {
@@ -45,6 +45,7 @@ const OrdersCollection = React.createClass({
     location.hash = item.id
   },
   render() {
+    const { data } = this.props
     return (
       <div>
         <Input 
@@ -64,7 +65,7 @@ const OrdersCollection = React.createClass({
           }}
           onRowSelected   = {this.handleRowSelected}
           filterColumns   = {['customer', 'user']}
-          data            = {orders} />
+          data            = {data} />
       </div>
     )
   }

@@ -2,12 +2,18 @@ import React from 'react'
 
 import { connectReduxForm } 
   from 'redux-form'
-import { Input, ButtonGroup, Button, Glyphicon }
+import { Input, ButtonGroup, Button, Glyphicon, Col, Row }
   from 'react-bootstrap'
 
 const CustomerRegistrationForm = React.createClass({
+  getInitialState() {
+    return {
+      editGpsData : false
+    }
+  },
   getDefaultProps() {
     return {
+      edit : false,
       areas : [
         {
           id   : 1,
@@ -29,8 +35,13 @@ const CustomerRegistrationForm = React.createClass({
     const { fields } = this.props
     return fields[field].touched && fields[field].error
   },
+  handleToggleEditGpsData() {
+    this.setState({
+      editGpsData : !this.state.editGpsData
+    })
+  },
   render() {
-    const { fields : { name, address, tin, phone, area, priceCategory }, handleSubmit, areas, priceCategories } = this.props
+    const { fields : { name, address, tin, phone, area, priceCategory, latitude, longitude }, handleSubmit, areas, priceCategories } = this.props
     return (
       <div>
         <Input {...name}
@@ -107,6 +118,32 @@ const CustomerRegistrationForm = React.createClass({
               )
             })}
         </Input>
+        {this.props.edit && (
+          <div>
+            <Input 
+              label           = 'GPS coordinates'
+              ref             = 'coordinatesVisible'
+              value           = {this.state.editGpsData}
+              onChange        = {this.handleToggleEditGpsData}
+              type            = 'checkbox' />
+            {this.state.editGpsData && (
+              <Row>
+                <Col md={6}>
+                  <Input {...latitude}
+                    type        = 'text'
+                    label       = 'Latitude'
+                    placeholder = 'Latitude' />
+                </Col>
+                <Col md={6}>
+                  <Input {...longitude}
+                    type        = 'text'
+                    label       = 'Longitude'
+                    placeholder = 'Longitude' />
+                </Col>
+              </Row>
+            )}
+          </div>
+        )}
         <hr />
         <ButtonGroup>
           <Button bsStyle='primary'>
@@ -143,6 +180,6 @@ function validateCustomer(data) {
 
 export default connectReduxForm({
   form     : 'customer',
-  fields   : ['name', 'address', 'tin', 'phone', 'area', 'priceCategory'],
+  fields   : ['name', 'address', 'tin', 'phone', 'area', 'priceCategory', 'latitude', 'longitude'],
   validate : validateCustomer
 })(CustomerRegistrationForm)

@@ -2,7 +2,7 @@ import React from 'react'
 import Grid  from '../../../common/components/Grid'
 import OrderSelection from './OrderSelection'
 
-import { Input, Row, Col, Button }
+import { Input, Row, Col, Button, Panel, FormControls }
   from 'react-bootstrap'
 
 const areas = [
@@ -121,30 +121,29 @@ const OrderQueueingComponent = React.createClass({
           <div>
             <div>
               <Row>
-                <Col xs={6}>
-                  <Input disabled type='text' value={vehicle.regNo} />
+                <Col xs={9}>
+                  <Input type='select' onChange={this.handleAreaSelected}>
+                    <option value={''}>
+                      Please select an area
+                    </option>
+                    {areas.map(item => {
+                      return (
+                        <option 
+                          key   = {item.id}
+                          value = {item.id}>
+                          {item.name}
+                        </option>
+                      )
+                    })}
+                  </Input>
                 </Col>
-                <Col xs={6}>
+                <Col xs={3}>
                   <Button block onClick={this.restart}>
                     Cancel 
                   </Button>
                 </Col>
               </Row>
             </div>
-            <Input type='select' onChange={this.handleAreaSelected}>
-              <option value={''}>
-                Please select an area
-              </option>
-              {areas.map(item => {
-                return (
-                  <option 
-                    key   = {item.id}
-                    value = {item.id}>
-                      {item.name}
-                  </option>
-                )
-              })}
-            </Input>
           </div>
         )}
         {vehicle && area && (

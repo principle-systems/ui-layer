@@ -21,10 +21,8 @@ const Grid = React.createClass({
       page : item.eventKey
     })
   },
-  filterBy(value) {
-    this.setState({
-      filterBy : value
-    })
+  filterBy(filterBy) {
+    this.setState({filterBy})
   },
   compile(items) {
     if (!items || !items.length) {
@@ -35,7 +33,7 @@ const Grid = React.createClass({
     }
     const { itemsPerPage, filterColumns } = this.props
     const { page, filterBy } = this.state
-    const filteredItems = (!filterBy || !filterColumns || !filterColumns.length) ? items : items.filter(item => {
+    const filteredItems = !filterBy || !filterColumns || !filterColumns.length ? items : items.filter(item => {
       for (let i = 0; i < filterColumns.length; i++) {
         if (String(item[filterColumns[i]]).toLowerCase().indexOf(filterBy.toLowerCase()) > -1) {
           return true
@@ -58,7 +56,6 @@ const Grid = React.createClass({
   render() {
     const { data, columns, labels, onRowSelected, tableClassName } = this.props
     const { items, pageCount } = this.compile(data) 
-    let i = 1
     if (!items.length) {
       return (
         <span style={{color : '#aaa'}}>
@@ -72,9 +69,9 @@ const Grid = React.createClass({
           {labels && (
             <thead>
               <tr>
-                {columns.map(column => {
+                {columns.map((column, i) => {
                   return (
-                    <th key={column}>
+                    <th key={i}>
                       {labels[column]}
                     </th>
                   )
@@ -83,18 +80,18 @@ const Grid = React.createClass({
             </thead>
           )}
           <tbody>
-            {items.map(item => {
-              const cells = columns.map(column => {
+            {items.map((item, i) => {
+              const cells = columns.map((column, j) => {
                 return (
-                  <td key={column}>
+                  <td key={j}>
                     {item[column]}
                   </td>
                 )
               })
               return 'function' === typeof(onRowSelected) ? (
-                <tr style={{cursor: 'pointer'}} onClick={() => onRowSelected(item)} key={i++}>{cells}</tr>
+                <tr style={{cursor: 'pointer'}} onClick={() => onRowSelected(item)} key={i}>{cells}</tr>
               ) : (
-                <tr key={i++}>{cells}</tr>
+                <tr key={i}>{cells}</tr>
               )
             })}
           </tbody>

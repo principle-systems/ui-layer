@@ -1,7 +1,7 @@
 import React from 'react'
 import Grid  from '../Grid'
 
-import { Input }
+import { Input, Modal, Button }
   from 'react-bootstrap'
 
 const stock = [
@@ -33,12 +33,40 @@ const stock = [
 ]
 
 const StockSummary = React.createClass({
+  getInitialState() {
+    return {
+      selected : null
+    }
+  },
   handleFilterChange(event) {
     this.refs.grid.filterBy(event.target.value)
   },
+  handleRowSelected(selected) {
+    console.log(selected)
+    this.setState({selected})
+  },
+  hideModal() {
+    this.setState({
+      selected : null
+    })
+  },
   render() {
+    const { selected } = this.state
     return (
       <div>
+        <Modal show={!!selected} onHide={this.hideModal}>
+          <Modal.Header closeButton={true}>
+            <Modal.Title>Product details</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            Product
+          </Modal.Body>
+          <Modal.Footer>
+            <Button block bsStyle='primary' onClick={this.hideModal}>
+              Ok
+            </Button>
+          </Modal.Footer>
+        </Modal>
         <Input 
           placeholder     = 'Filter results'
           onChange        = {this.handleFilterChange}
@@ -52,6 +80,7 @@ const StockSummary = React.createClass({
             'available' : 'Available',
             'actual'    : 'Actual'
           }}
+          onRowSelected   = {this.handleRowSelected}
           filterColumns   = {['product']}
           data            = {stock} />
       </div>

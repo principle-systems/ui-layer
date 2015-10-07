@@ -389,7 +389,7 @@ ul.pagination {
     border-top: 1px solid #ecf0f1;
 }
 
-.panel-fill .panel,
+.panel-fill .tab-content .panel,
 .panel-fill .tab-content,
 .panel-tab-pane {
     border: none;
