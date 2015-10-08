@@ -67,13 +67,10 @@ const OrderSelection = React.createClass({
     this.state.selection.forEach(item => {
       tot += item.weight
     })
-    return tot > 1 ? {
-      style : 'danger',
+    return {
+      style : tot > 1 ? 'danger' : 'success',
       total : tot * 100
-    } : {
-      style : 'default',
-      total : tot * 100
-    }
+    } 
   },
   render() {
     const { orders, area } = this.props
@@ -81,9 +78,6 @@ const OrderSelection = React.createClass({
     return (
       <div>
         <ProgressBar bsStyle={style} now={total} />
-        {total > 100 && (
-          <div>Overload!</div>
-        )}
         <Table bordered>
           <thead>
             <tr>
@@ -115,11 +109,9 @@ const OrderSelection = React.createClass({
           })}
           </tbody>
         </Table>
-        {total <= 100 && (
-          <Button block bsStyle='primary'>
-            <Glyphicon glyph='ok' />Submit
-          </Button>
-        )}
+        <Button block bsStyle='primary' disabled={total > 100}>
+          <Glyphicon glyph='ok' />Submit
+        </Button>
       </div>
     )
   }

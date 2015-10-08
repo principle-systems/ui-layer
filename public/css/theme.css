@@ -228,7 +228,6 @@ ol.breadcrumb {
 
 .progress-bar {
     transition: none !important;
-    background-color: #2c2c2c;
 }
 
 /* Griddle */
@@ -252,6 +251,11 @@ ol.breadcrumb {
 .help-pull-right .help-block {
     float: right;
     margin-top: -2.1em;
+}
+
+.static-control {
+    border: 1px solid #e5e5e5;
+    padding-left: 1em;
 }
 
 /* Buttons */

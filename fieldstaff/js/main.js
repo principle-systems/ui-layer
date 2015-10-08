@@ -128,6 +128,16 @@ const ProductItem = React.createClass({
   }
 })
 
+function wrap(Component) {
+  return React.createClass({
+    render() {
+      return (
+        <Component {...this.props} dispatch={store.dispatch} device={device} />
+      )
+    }
+  })
+}
+
 const routes = (
   <Route handler={Handler}>
     <Route path='products/:id'       handler={wrap(RouteProductItem)}     />

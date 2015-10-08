@@ -81,7 +81,7 @@ const RouteStock = React.createClass({
           onSelect  = {this.handleSelect}>
           <Tab eventKey={1} title='Summary'>
             <Panel>
-              <StockSummary />
+              <StockSummary device={device} />
             </Panel>
           </Tab>
           <Tab eventKey={2} title='Activity'>

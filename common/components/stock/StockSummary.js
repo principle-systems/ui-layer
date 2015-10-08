@@ -1,5 +1,6 @@
-import React from 'react'
-import Grid  from '../Grid'
+import React       from 'react'
+import Grid        from '../Grid'
+import ProductView from '../products/ProductView'
 
 import { Input, Modal, Button }
   from 'react-bootstrap'
@@ -42,8 +43,10 @@ const StockSummary = React.createClass({
     this.refs.grid.filterBy(event.target.value)
   },
   handleRowSelected(selected) {
-    console.log(selected)
-    this.setState({selected})
+    const product = this.props.device.fetch('products/_qG')
+    this.setState({
+      selected : product
+    })
   },
   hideModal() {
     this.setState({
@@ -54,19 +57,21 @@ const StockSummary = React.createClass({
     const { selected } = this.state
     return (
       <div>
-        <Modal show={!!selected} onHide={this.hideModal}>
-          <Modal.Header closeButton={true}>
-            <Modal.Title>Product details</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            Product
-          </Modal.Body>
-          <Modal.Footer>
-            <Button block bsStyle='primary' onClick={this.hideModal}>
-              Ok
-            </Button>
-          </Modal.Footer>
-        </Modal>
+        {selected && (
+          <Modal show={!!selected} onHide={this.hideModal}>
+            <Modal.Header closeButton={true}>
+              <Modal.Title>Product details</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <ProductView product={selected} />
+            </Modal.Body>
+            <Modal.Footer>
+              <Button block bsStyle='primary' onClick={this.hideModal}>
+                Ok
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        )}
         <Input 
           placeholder     = 'Filter results'
           onChange        = {this.handleFilterChange}

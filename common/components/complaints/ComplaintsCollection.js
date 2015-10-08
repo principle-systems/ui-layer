@@ -69,7 +69,7 @@ const ComplaintsCollection = React.createClass({
     const { complaint } = this.state
     return (
       <div>
-        <Modal show={!!this.state.complaint} onHide={this.hideModal}>
+        <Modal show={!!complaint} onHide={this.hideModal}>
           <Modal.Header closeButton={true}>
             <Modal.Title>Complaint details</Modal.Title>
           </Modal.Header>

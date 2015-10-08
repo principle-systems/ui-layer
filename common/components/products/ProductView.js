@@ -8,12 +8,6 @@ const ProductView = React.createClass({
     const { product } = this.props
     return (
       <div>
-        <ol className='breadcrumb'>
-          <li>
-            <a href='#products'>Products</a>
-          </li>
-          <li className='active'>{product.name}</li>
-        </ol>
         <h3>{product.name}</h3>
         <blockquote>
           {product.description}

@@ -1,7 +1,7 @@
 import React from 'react'
 import Grid  from '../Grid'
 
-import { Input, Modal, Button, Glyphicon, Row, Col }
+import { Input, Modal, Button, Glyphicon, Row, Col, FormControls }
   from 'react-bootstrap'
 
 const stock = [
@@ -47,6 +47,7 @@ const StockCheckForm = React.createClass({
     this.refs.grid.filterBy(event.target.value)
   },
   handleRowSelected(item) {
+    console.log(item)
     this.setState({
       stockItem : item
     })
@@ -62,14 +63,18 @@ const StockCheckForm = React.createClass({
       <div>
         {stockItem && (
           <Modal show={!!stockItem} onHide={this.hideModal}>
-            <Modal.Header>
+            <Modal.Header closeButton={true}>
               <Modal.Title>Stock check</Modal.Title>
             </Modal.Header>
             <Modal.Body>
+              <FormControls.Static 
+                label            = 'Product'
+                wrapperClassName = 'static-control'
+                value            = {stockItem.product} />
               <Input 
-                label       = 'Quantity'
-                placeholder = 'Quantity'
-                type        = 'number' />
+                label            = 'Quantity'
+                placeholder      = 'Quantity'
+                type             = 'number' />
             </Modal.Body>
             <Modal.Footer>
               <Button block bsStyle='primary'>

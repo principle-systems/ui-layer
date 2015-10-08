@@ -8,7 +8,7 @@ import ProductsCollection       from './components/products/ProductsCollection'
 import StockSummary             from './components/stock/StockSummary'
 import StockActivityView        from './components/stock/StockActivityView'
 
-import { Tabs, Tab, Panel }
+import { Tabs, Tab, Panel, Breadcrumb, BreadcrumbItem }
   from 'react-bootstrap'
 import { initialize } 
   from 'redux-form'
@@ -38,6 +38,14 @@ export const RouteProductItem = React.createClass({
         className = 'panel-fill'
         bsStyle   = 'primary'
         header    = 'Products'>
+        <Breadcrumb>
+          <BreadcrumbItem href='#/products'>
+            Products
+          </BreadcrumbItem>
+          <BreadcrumbItem active>
+            {product.name}
+          </BreadcrumbItem>
+        </Breadcrumb>
         <ProductView product={product} />
       </Panel>
     ) : (
@@ -91,6 +99,14 @@ export const RouteCustomerItem = React.createClass({
         className   = 'panel-fill'
         bsStyle     = 'primary'
         header      = 'Customers'>
+        <Breadcrumb>
+          <BreadcrumbItem href='#/customers'>
+            Customers
+          </BreadcrumbItem>
+          <BreadcrumbItem active>
+            {customer.name}
+          </BreadcrumbItem>
+        </Breadcrumb>
         <CustomerView customer={customer} />
       </Panel>
     ) : (
@@ -256,7 +272,7 @@ export const RouteStock = React.createClass({
           onSelect  = {this.handleSelect}>
           <Tab eventKey={1} title='Summary'>
             <Panel>
-              <StockSummary />
+              <StockSummary {...this.props} />
             </Panel>
           </Tab>
           <Tab eventKey={2} title='Activity'>

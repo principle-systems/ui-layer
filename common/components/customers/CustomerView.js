@@ -3,8 +3,9 @@ import CustomerActivityLog  from './CustomerActivityLog'
 import OrdersCollection     from '../orders/OrdersCollection'
 import TasksCollection      from '../tasks/TasksCollection'
 import ComplaintsCollection from '../complaints/ComplaintsCollection'
+import CustomerInfo         from './CustomerInfo'
 
-import { Panel, Tabs, Tab, ButtonGroup, DropdownButton, Button, MenuItem, Glyphicon, Table, Label, Modal, Breadcrumb, BreadcrumbItem }
+import { Panel, Tabs, Tab, ButtonGroup, DropdownButton, Button, MenuItem, Glyphicon, Table, Label, Modal, Breadcrumb, BreadcrumbItem, Row, Col }
   from 'react-bootstrap'
 
 const CustomerActivityModal = React.createClass({
@@ -12,6 +13,21 @@ const CustomerActivityModal = React.createClass({
     const { action, onHide } = this.props
     switch (action) {
       case 'call-activity-1':
+        return (
+          <Modal show={true} onHide={onHide}>
+            <Modal.Header closeButton={true}>
+              <Modal.Title>Complaint details</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              hello
+            </Modal.Body>
+            <Modal.Footer>
+              <Button block bsStyle='primary' onClick={onHide}>
+                Ok
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        )
       case 'call-activity-2':
       case 'call-activity-3':
       case 'call-activity-4':
@@ -24,7 +40,7 @@ const CustomerActivityModal = React.createClass({
       case 'customer-visit-5':
       case 'customer-visit-6':
         return (
-          <Modal show={!!action} onHide={onHide}>
+          <Modal show={true} onHide={onHide}>
             <Modal.Header closeButton={true}>
               <Modal.Title>Complaint details</Modal.Title>
             </Modal.Header>
@@ -44,7 +60,7 @@ const CustomerActivityModal = React.createClass({
   }
 })
 
-const CustomerInfo = React.createClass({
+const CustomerData = React.createClass({
   getInitialState() {
     return {
       action : null
@@ -64,58 +80,44 @@ const CustomerInfo = React.createClass({
     return (
       <div>
         <CustomerActivityModal onHide={this.hideModal} action={action} />
-        <h3>{customer.name}</h3>
-        <hr />
-        <ButtonGroup 
-          className  = 'pull-right'
-          style      = {{marginTop: '-5.5em'}}>
-          <DropdownButton 
-            id       = 'call-activity-select'
-            onSelect = {this.handleDropdownSelect}
-            title    = {(
-            <span>
-              <Glyphicon glyph='earphone' />Call activity
-            </span>
-          )}>
-            <MenuItem eventKey='call-activity-1'>Place an order</MenuItem>
-            <MenuItem eventKey='call-activity-2'>Add a contact</MenuItem>
-            <MenuItem eventKey='call-activity-3'>Register a service complaint</MenuItem>
-            <MenuItem eventKey='call-activity-4'>Register a quality complaint</MenuItem>
-            <MenuItem eventKey='call-activity-5'>Schedule callback</MenuItem>
-            <MenuItem eventKey='call-activity-6'>No action</MenuItem>
-          </DropdownButton>
-          <DropdownButton 
-            id       = 'customer-visit-select'
-            onSelect = {this.handleDropdownSelect}
-            title    = {(
-            <span>
-              <Glyphicon glyph='home' />Customer visit
-            </span>
-          )}>
-            <MenuItem eventKey='customer-visit-1'>Place an order</MenuItem>
-            <MenuItem eventKey='customer-visit-2'>Add a contact</MenuItem>
-            <MenuItem eventKey='customer-visit-3'>Register a service complaint</MenuItem>
-            <MenuItem eventKey='customer-visit-4'>Register a quality complaint</MenuItem>
-            <MenuItem eventKey='customer-visit-5'>Schedule follow-up visit</MenuItem>
-            <MenuItem eventKey='customer-visit-6'>No action</MenuItem>
-          </DropdownButton>
-          <Button onClick={() => { location.hash = `${customer.id}/edit` }}>
-            <Glyphicon glyph='pencil' />Edit customer
-          </Button>
-        </ButtonGroup>
-        <h4 style={{marginBottom: '1em'}}>
-          <Label bsStyle='info'>{customer.priceCategory}</Label>
-        </h4>
-        <Table bordered>
-          <col width={250} />
-          <col />
-          <tbody>
-            <tr>
-              <td><strong>Address</strong></td>
-              <td>{customer.address}</td>
-            </tr>
-          </tbody>
-        </Table>
+
+            <ButtonGroup justified>
+              <DropdownButton 
+                id       = 'call-activity-select'
+                onSelect = {this.handleDropdownSelect}
+                title    = {(
+                <span>
+                  <Glyphicon glyph='earphone' />Call activity
+                </span>
+              )}>
+                <MenuItem eventKey='call-activity-1'>Place an order</MenuItem>
+                <MenuItem eventKey='call-activity-2'>Add a contact</MenuItem>
+                <MenuItem eventKey='call-activity-3'>Register a service complaint</MenuItem>
+                <MenuItem eventKey='call-activity-4'>Register a quality complaint</MenuItem>
+                <MenuItem eventKey='call-activity-5'>Schedule callback</MenuItem>
+                <MenuItem eventKey='call-activity-6'>No action</MenuItem>
+              </DropdownButton>
+              <DropdownButton 
+                id       = 'customer-visit-select'
+                onSelect = {this.handleDropdownSelect}
+                title    = {(
+                <span>
+                  <Glyphicon glyph='home' />Customer visit
+                </span>
+              )}>
+                <MenuItem eventKey='customer-visit-1'>Place an order</MenuItem>
+                <MenuItem eventKey='customer-visit-2'>Add a contact</MenuItem>
+                <MenuItem eventKey='customer-visit-3'>Register a service complaint</MenuItem>
+                <MenuItem eventKey='customer-visit-4'>Register a quality complaint</MenuItem>
+                <MenuItem eventKey='customer-visit-5'>Schedule follow-up visit</MenuItem>
+                <MenuItem eventKey='customer-visit-6'>No action</MenuItem>
+              </DropdownButton>
+              <Button onClick={() => { location.hash = `${customer.id}/edit` }}>
+                <Glyphicon glyph='pencil' />Edit customer
+              </Button>
+            </ButtonGroup>
+
+        <CustomerInfo customer={customer} />
       </div>
     )
   }
@@ -137,16 +139,8 @@ const CustomerView = React.createClass({
     }
     return (
       <div>
-        <Breadcrumb>
-          <BreadcrumbItem href='#/customers'>
-            Customers
-          </BreadcrumbItem>
-          <BreadcrumbItem active>
-            {customer.name}
-          </BreadcrumbItem>
-        </Breadcrumb>
         <div>
-          <CustomerInfo customer={customer} />
+          <CustomerData customer={customer} />
         </div>
         <Panel 
           className='panel-flat' 

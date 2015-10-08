@@ -2,7 +2,7 @@ import React from 'react'
 import Grid  from '../../../common/components/Grid'
 import OrderSelection from './OrderSelection'
 
-import { Input, Row, Col, Button, Panel, FormControls }
+import { Input, Row, Col, Button, Panel, FormControls, Glyphicon }
   from 'react-bootstrap'
 
 const areas = [
@@ -100,7 +100,9 @@ const OrderQueueingComponent = React.createClass({
               placeholder     = 'Filter results' 
               onChange        = {this.handleFilterChange} 
               type            = 'text' />
-            <h4>Available vehicles</h4>
+            <h4>
+              <i className='fa fa-truck fa-fw' /> Available vehicles
+            </h4>
             <Grid
               ref             = 'grid'
               tableClassName  = 'table table-bordered table-hover'
@@ -139,7 +141,7 @@ const OrderQueueingComponent = React.createClass({
                 </Col>
                 <Col xs={3}>
                   <Button block onClick={this.restart}>
-                    Cancel 
+                    <Glyphicon glyph='remove' /><span className='hidden-xs'> Cancel</span>
                   </Button>
                 </Col>
               </Row>
