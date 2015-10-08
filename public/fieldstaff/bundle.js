@@ -1928,6 +1928,155 @@ var Component = _react2['default'].createClass({
   }
 });
 
+var dummyData = [{
+  "name": "Teacher Shop",
+  "priceCategory": "Retail",
+  "phone": 25562440128,
+  "area": "Kinondoni",
+  "address": "Temboni, Saranga",
+  "position": {
+    "latitude": -6.78725,
+    "longitude": 39.137914
+  },
+  "tin": "58-12976962",
+  "_collections": [{
+    "href": "customers",
+    "collection": "customers"
+  }],
+  "id": "customers/_oq2",
+  "_links": {
+    "self": {
+      "href": "customers/_oq2"
+    }
+  }
+}, {
+  "name": "Marafiki",
+  "priceCategory": "Wholesale",
+  "phone": 25565236987,
+  "area": "Kinondoni",
+  "address": "Kimala, Saranga",
+  "position": {
+    "latitude": -6.788137,
+    "longitude": 39.166508
+  },
+  "tin": "23-22679669",
+  "_collections": [{
+    "href": "customers",
+    "collection": "customers"
+  }],
+  "id": "customers/_RrO",
+  "_links": {
+    "self": {
+      "href": "customers/_RrO"
+    }
+  }
+}, {
+  "name": "Saidi Shop",
+  "priceCategory": "Retail",
+  "phone": 25565259543,
+  "area": "Ilala",
+  "address": "Malapa, Buguruni",
+  "position": {
+    "latitude": -6.832891,
+    "longitude": 39.250767
+  },
+  "tin": "59-12034636",
+  "_collections": [{
+    "href": "customers",
+    "collection": "customers"
+  }],
+  "id": "customers/_QnR",
+  "_links": {
+    "self": {
+      "href": "customers/_QnR"
+    }
+  }
+}, {
+  "name": "Franco Shop",
+  "priceCategory": "Retail",
+  "phone": 25565286261,
+  "area": "Temeke",
+  "address": "Maturubai, Mbagala",
+  "position": {
+    "latitude": -6.903499,
+    "longitude": 39.266195
+  },
+  "tin": "6-46933783",
+  "_collections": [{
+    "href": "customers",
+    "collection": "customers"
+  }],
+  "id": "customers/_geG",
+  "_links": {
+    "self": {
+      "href": "customers/_geG"
+    }
+  }
+}, {
+  "name": "Baraka Shop",
+  "priceCategory": "Retail",
+  "phone": 25565311086,
+  "area": "Temeke",
+  "address": "Mapinduzi, Mtoni",
+  "position": {
+    "latitude": -6.866959,
+    "longitude": 39.277318
+  },
+  "tin": "90-735783",
+  "_collections": [{
+    "href": "customers",
+    "collection": "customers"
+  }],
+  "id": "customers/_57n",
+  "_links": {
+    "self": {
+      "href": "customers/_57n"
+    }
+  }
+}, {
+  "name": "Robert",
+  "priceCategory": "Retail",
+  "phone": 25565358979,
+  "area": "Ilala",
+  "address": "Mawenzi, Kimanga",
+  "position": {
+    "latitude": -6.823217,
+    "longitude": 39.211772
+  },
+  "tin": "66-74827410",
+  "_collections": [{
+    "href": "customers",
+    "collection": "customers"
+  }],
+  "id": "customers/_KAq",
+  "_links": {
+    "self": {
+      "href": "customers/_KAq"
+    }
+  }
+}, {
+  "name": "Abiolla",
+  "priceCategory": "Retail",
+  "phone": 25565541747,
+  "area": "Temeke",
+  "address": "Amani St, Mtoni",
+  "position": {
+    "latitude": -6.867473,
+    "longitude": 39.277363
+  },
+  "tin": "44-70533089",
+  "_collections": [{
+    "href": "customers",
+    "collection": "customers"
+  }],
+  "id": "customers/_Wne",
+  "_links": {
+    "self": {
+      "href": "customers/_Wne"
+    }
+  }
+}];
+
 var CustomersCollection = _react2['default'].createClass({
   displayName: 'CustomersCollection',
 
@@ -1938,7 +2087,7 @@ var CustomersCollection = _react2['default'].createClass({
   },
   getDefaultProps: function getDefaultProps() {
     return {
-      data: []
+      data: dummyData
     };
   },
   handleFilterChange: function handleFilterChange(event) {
@@ -1964,6 +2113,8 @@ var CustomersCollection = _react2['default'].createClass({
   render: function render() {
     var data = this.props.data;
     var collapsed = this.state.collapsed;
+
+    console.log(JSON.stringify(this.props.data.slice(0, 7), null, 2));
 
     var columns = collapsed ? ['name', 'phone', 'area', 'priceCategory', 'location'] : ['name', 'address', 'phone', 'area', 'priceCategory', 'location'];
     var labels = collapsed ? {
