@@ -4,7 +4,7 @@ import Grid  from '../Grid'
 import { Input, Button, Glyphicon }
   from 'react-bootstrap'
 
-const LocationButton = React.createClass({
+const Component = React.createClass({
   render() {
     return (
       <Button block bsSize='xs'>
@@ -218,7 +218,8 @@ const CustomersCollection = React.createClass({
     window.removeEventListener('resize', this.handleResize)
   },
   render() {
-    const { data } = this.props
+    //const { data } = this.props
+    const data = dummyData
     const { collapsed } = this.state
 
     console.log(JSON.stringify(this.props.data.slice(0, 7), null, 2))
@@ -253,7 +254,7 @@ const CustomersCollection = React.createClass({
           ref              = 'grid'
           data             = {data}
           customComponents = {{
-            'location' : LocationButton
+            'location' : Component 
           }}
           columns          = {columns}
           labels           = {labels}

@@ -2111,7 +2111,8 @@ var CustomersCollection = _react2['default'].createClass({
     window.removeEventListener('resize', this.handleResize);
   },
   render: function render() {
-    var data = this.props.data;
+    //const { data } = this.props
+    var data = dummyData;
     var collapsed = this.state.collapsed;
 
     console.log(JSON.stringify(this.props.data.slice(0, 7), null, 2));
