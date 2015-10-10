@@ -53,10 +53,6 @@ const Grid = React.createClass({
       pageCount : Math.ceil(filteredItems.length/itemsPerPage)
     }
   },
-  customComponent(column) {
-    const X = this.props.customComponents[column]
-    return <X />
-  },
   render() {
     const { data, columns, labels, onRowSelected, tableClassName } = this.props
     const { items, pageCount } = this.compile(data) 
@@ -86,9 +82,11 @@ const Grid = React.createClass({
           <tbody>
             {items.map((item, i) => {
               const cells = columns.map((column, j) => {
+                const { customComponents } = this.props
+                const Component = customComponents ? customComponents[column] : null
                 return (
                   <td key={j}>
-                    {item.hasOwnProperty(column) ? item[column] : this.customComponent(column)}
+                    {Component ? <Component row={item} data={item[column]} /> : item[column]}
                   </td>
                 )
               })

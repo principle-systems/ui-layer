@@ -124,7 +124,7 @@ function wrap(Component) {
   return React.createClass({
     render() {
       return (
-        <Component {...this.props} dispatch={store.dispatch} device={device} />
+        <Component {...this.props} dashboard='callcenter' dispatch={store.dispatch} device={device} />
       )
     }
   })

@@ -61,12 +61,13 @@ const StockActivityView = React.createClass({
       <div>
         <Grid
           ref             = 'grid'
-          columns         = {['action', 'product', 'type', 'quantity']}
+          columns         = {['action', 'product', 'type', 'quantity', 'time']}
           labels          = {{
             'action'   : 'Action',
             'product'  : 'Product',
             'type'     : 'Quantity changed',
-            'quantity' : 'Change incurred'
+            'quantity' : 'Change incurred',
+            'time'     : 'Time'
           }}
           tableClassName  = 'table table-bordered'
           data            = {stock} />

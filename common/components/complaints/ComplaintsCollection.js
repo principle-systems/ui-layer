@@ -1,6 +1,7 @@
 import React         from 'react'
 import Grid          from '../Grid'
 import ComplaintView from './ComplaintView'
+import TimeAgo       from 'react-timeago'
 
 import { Input, Modal, Button }
   from 'react-bootstrap'
@@ -48,6 +49,26 @@ const complaints = [
   }
 ]
 
+const TimeComponent = React.createClass({
+  timeFormatter(value, unit, suffix) {
+    if ('second' === unit) {
+      return 'less than a minute ago';
+    }
+    if (value !== 1) {
+      unit += 's';
+    }
+    return `${value} ${unit} ${suffix}`
+  },
+  render() {
+    const { data } = this.props
+    return (
+      <TimeAgo
+        date      = {Number(data)}
+        formatter = {this.timeFormatter} />
+    )
+  }
+})
+
 const ComplaintsCollection = React.createClass({
   getInitialState() {
     return {
@@ -83,12 +104,15 @@ const ComplaintsCollection = React.createClass({
           </Modal.Footer>
         </Modal>
         <Input 
-          placeholder     = 'Filter results' 
-          onChange        = {this.handleFilterChange} 
-          type            = 'text' />
+          placeholder      = 'Filter results' 
+          onChange         = {this.handleFilterChange} 
+          type             = 'text' />
         <Grid
-          ref             = 'grid'
-          columns         = {['customer', 'created', 'type', 'description', 'user']}
+          ref              = 'grid'
+          columns          = {['customer', 'created', 'type', 'description', 'user']}
+          customComponents = {{
+            'created' : TimeComponent
+          }}
           labels          = {{
             'customer'    : 'Customer',
             'created'     : 'Created',
@@ -96,10 +120,10 @@ const ComplaintsCollection = React.createClass({
             'description' : 'Description',
             'user'        : 'User'
           }}
-          onRowSelected   = {this.handleRowSelected}
-          filterColumns   = {['customer', 'description', 'user']}
-          tableClassName  = 'table table-bordered'
-          data            = {complaints} />
+          onRowSelected    = {this.handleRowSelected}
+          filterColumns    = {['customer', 'description', 'user']}
+          tableClassName   = 'table table-bordered'
+          data             = {complaints} />
       </div>
     )
   }

@@ -31,11 +31,13 @@ const NavComponent = React.createClass({
           onToggle     = {this.toggle}
           inverse      = {true}
           toggleNavKey = {0}>
+          {/*
           <NavBrand>
             <a href='#'>
               <img src='../images/sphere-logo.png' alt='' />
             </a>
           </NavBrand>
+          */}
           <CollapsibleNav eventKey={0}>
             <Nav navbar
               onSelect    = {this.handleSelectItem}

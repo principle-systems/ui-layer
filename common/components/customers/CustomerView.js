@@ -75,13 +75,13 @@ const CustomerData = React.createClass({
     this.setState({action})
   },
   render() {
-    const { customer } = this.props
+    const { customer, dashboard } = this.props
     const { action } = this.state
     return (
       <div>
         <CustomerActivityModal onHide={this.hideModal} action={action} />
 
-            <ButtonGroup justified>
+            <ButtonGroup>
               <DropdownButton 
                 id       = 'call-activity-select'
                 onSelect = {this.handleDropdownSelect}
@@ -97,27 +97,29 @@ const CustomerData = React.createClass({
                 <MenuItem eventKey='call-activity-5'>Schedule callback</MenuItem>
                 <MenuItem eventKey='call-activity-6'>No action</MenuItem>
               </DropdownButton>
-              <DropdownButton 
-                id       = 'customer-visit-select'
-                onSelect = {this.handleDropdownSelect}
-                title    = {(
-                <span>
-                  <Glyphicon glyph='home' />Customer visit
-                </span>
-              )}>
-                <MenuItem eventKey='customer-visit-1'>Place an order</MenuItem>
-                <MenuItem eventKey='customer-visit-2'>Add a contact</MenuItem>
-                <MenuItem eventKey='customer-visit-3'>Register a service complaint</MenuItem>
-                <MenuItem eventKey='customer-visit-4'>Register a quality complaint</MenuItem>
-                <MenuItem eventKey='customer-visit-5'>Schedule follow-up visit</MenuItem>
-                <MenuItem eventKey='customer-visit-6'>No action</MenuItem>
-              </DropdownButton>
+              {'fieldstaff' === dashboard && (
+                <DropdownButton 
+                  id       = 'customer-visit-select'
+                  onSelect = {this.handleDropdownSelect}
+                  title    = {(
+                  <span>
+                    <Glyphicon glyph='home' />Customer visit
+                  </span>
+                )}>
+                  <MenuItem eventKey='customer-visit-1'>Place an order</MenuItem>
+                  <MenuItem eventKey='customer-visit-2'>Add a contact</MenuItem>
+                  <MenuItem eventKey='customer-visit-3'>Register a service complaint</MenuItem>
+                  <MenuItem eventKey='customer-visit-4'>Register a quality complaint</MenuItem>
+                  <MenuItem eventKey='customer-visit-5'>Schedule follow-up visit</MenuItem>
+                  <MenuItem eventKey='customer-visit-6'>No action</MenuItem>
+                </DropdownButton>
+              )}
               <Button onClick={() => { location.hash = `${customer.id}/edit` }}>
                 <Glyphicon glyph='pencil' />Edit customer
               </Button>
             </ButtonGroup>
 
-        <CustomerInfo customer={customer} />
+        <CustomerInfo dashboard={dashboard} customer={customer} />
       </div>
     )
   }
@@ -140,7 +142,7 @@ const CustomerView = React.createClass({
     return (
       <div>
         <div>
-          <CustomerData customer={customer} />
+          <CustomerData {...this.props} customer={customer} />
         </div>
         <Panel 
           className='panel-flat' 

@@ -1,6 +1,8 @@
 import { EventEmitter } from 'events'
 
-class StorageItem {
+import CreateResource from '../commands/CreateResource'
+
+export class StorageItem {
 
   constructor(id, device, data = {}) {
     this.id = id
@@ -15,9 +17,23 @@ class StorageItem {
     return item.data
   }
 
+  static insert(id, device, data) {
+    let item = new StorageItem(id, device, data)
+    item.save()
+  }
+
   load() {
     this.data = this.device.getItem(this.id) || {}
     this._sanitize()
+  }
+
+  save() {
+    this._sanitize()
+    this.device.setItem(this.id, this.data)
+  }
+
+  destroy() {
+    this.device.removeItem(this.id)
   }
 
   _sanitize() {
@@ -32,7 +48,7 @@ class StorageItem {
 
 }
 
-class Collection {
+export class Collection {
 
   constructor(id, device, resource) {
     this.id = id
@@ -140,6 +156,21 @@ class Device extends EventEmitter {
 
   notify(message) {
     this.emit('notification', message)
+  }
+
+  run(command) {
+    const { action, data, resource } = command
+    switch (action) {
+      case 'create_resource':
+        let action = new CreateResource(this, data, resource)
+        action.up()
+        break
+      default:
+        break
+    }
+    this.updateItem('_device', context => {
+      context.commit.push(command)
+    }, { commit : [] })
   }
 
 }

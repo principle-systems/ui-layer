@@ -9,6 +9,7 @@ import StockDamageReportForm    from '../../common/components/stock/StockDamageR
 import DispatchesCollection     from '../../common/components/dispatches/DispatchesCollection'
 import OrderQueueingComponent   from '../../depot/components/queueing/OrderQueueingComponent'
 import DriversCollection        from '../../common/components/drivers/DriversCollection'
+import DriverView               from '../../common/components/drivers/DriverView'
 import PageWrapper              from '../../common/components/PageWrapper'
 import Device                   from '../../common/js/device'
 import app                      from './reducers'
@@ -110,6 +111,39 @@ const RouteStock = React.createClass({
   }
 })
 
+const RouteDriversItem = React.createClass({
+  getInitialState() {
+    return {
+      driver : null
+    }
+  },
+  fetchDriver() {
+    this.setState({
+      driver : {
+        id   : 1,
+        name : 'Bob'
+      }
+    })
+  },
+  componentDidMount() {
+    this.fetchDriver()
+    device.on('change', this.fetchDriver)
+  },
+  componentWillUnmount() {
+    device.removeListener('change', this.fetchDriver)
+  },
+  render() {
+    const { driver } = this.state
+    return (
+      <Panel
+        bsStyle = 'primary'
+        header  = 'Drivers'>
+        <DriverView driver={driver} />
+      </Panel>
+    )
+  }
+})
+
 const RouteDrivers = React.createClass({
   render() {
     return (
@@ -183,6 +217,7 @@ const routes = (
   <Route handler={Handler}>
     <Route path ='dispatches'          handler={RouteDispatches}  />
     <Route path ='stock'               handler={RouteStock}       />
+    <Route path ='drivers/:id'         handler={RouteDriversItem} />
     <Route path ='drivers'             handler={RouteDrivers}     />
     <Route path ='queueing'            handler={RouteQueueing}    />
     <Route path ='performance'         handler={RoutePerformance} />

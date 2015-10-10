@@ -1,5 +1,6 @@
-import React from 'react'
-import Grid  from '../../../common/components/Grid'
+import React   from 'react'
+import Grid    from '../../../common/components/Grid'
+import TimeAgo from 'react-timeago'
 
 import { Button, Table, Input, Glyphicon, ProgressBar }
   from 'react-bootstrap'
@@ -41,6 +42,26 @@ const orders = [
     weight   : .8
   }
 ]
+
+const TimeComponent = React.createClass({
+  timeFormatter(value, unit, suffix) {
+    if ('second' === unit) {
+      return 'less than a minute ago';
+    }
+    if (value !== 1) {
+      unit += 's';
+    }
+    return `${value} ${unit} ${suffix}`
+  },
+  render() {
+    const { data } = this.props
+    return (
+      <TimeAgo
+        date      = {Number(data)}
+        formatter = {this.timeFormatter} />
+    )
+  }
+})
 
 const OrderSelection = React.createClass({
   getInitialState() {
@@ -100,7 +121,7 @@ const OrderSelection = React.createClass({
                   />
                 </td>
                 <td>{item.customer}</td>
-                <td>{item.created}</td>
+                <td><TimeComponent data={item.created} /></td>
                 <td>{item.productCount}</td>
                 <td>{item.user}</td>
                 <td>{item.orderTotal}</td>

@@ -8,6 +8,8 @@ import NotificationManager      from '../../common/components/NotificationManage
 import Device                   from '../../common/js/device'
 import app                      from './reducers'
 
+import CreateResource from '../../common/commands/CreateResource'
+
 import { Route, RouteHandler }  
   from 'react-router'
 import { createStore } 
@@ -18,6 +20,9 @@ import { Tabs, Tab, Panel }
   from 'react-bootstrap'
 import { RouteProductItem, RouteCustomerEdit, RouteCustomerItem, RouteCustomers, RouteOrders, RouteProducts, RouteStock }
   from '../../common/Routes'
+
+import { Navbar, CollapsibleNav, NavItem, Nav, NavBrand }
+  from 'react-bootstrap'
 
 const store  = createStore(app)
 const device = new Device('depot')
@@ -77,6 +82,37 @@ const RoutePerformance = React.createClass({
   }
 })
 
+const menuItems=[
+  {
+    'label' : 'Customers',
+    'href'  : '#customers'
+  },
+  {
+    'label' : 'Complaints',
+    'href'  : '#complaints'
+  },
+  {
+    'label' : 'Orders',
+    'href'  : '#orders'
+  },
+  {
+    'label' : 'Products',
+    'href'  : '#products'
+  },
+  {
+    'label' : 'Stock',
+    'href'  : '#stock'
+  },
+  {
+    'label' : 'Tasks',
+    'href'  : '#tasks'
+  },
+  {
+    'label' : 'Performance',
+    'href'  : '#performance'
+  }
+]
+
 const Handler = React.createClass({
   render() {
     return (
@@ -132,7 +168,7 @@ function wrap(Component) {
   return React.createClass({
     render() {
       return (
-        <Component {...this.props} dispatch={store.dispatch} device={device} />
+        <Component {...this.props} dashboard='fieldstaff' dispatch={store.dispatch} device={device} />
       )
     }
   })

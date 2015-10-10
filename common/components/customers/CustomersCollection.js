@@ -1,10 +1,11 @@
-import React from 'react'
-import Grid  from '../Grid'
+import React   from 'react'
+import TimeAgo from 'react-timeago'
+import Grid    from '../Grid'
 
 import { Input, Button, Glyphicon }
   from 'react-bootstrap'
 
-const Component = React.createClass({
+const LocationButton = React.createClass({
   render() {
     return (
       <Button block bsSize='xs'>
@@ -14,6 +15,25 @@ const Component = React.createClass({
   }
 })
 
+const TimeComponent = React.createClass({
+  timeFormatter(value, unit, suffix) {
+    if ('second' === unit) {
+      return 'less than a minute ago';
+    }
+    if (value !== 1) {
+      unit += 's';
+    }
+    return `${value} ${unit} ${suffix}`
+  },
+  render() {
+    const { data } = this.props
+    return (
+      <TimeAgo
+        date      = {Number(data)}
+        formatter = {this.timeFormatter} />
+    )
+  }
+})
 const dummyData = [
   {
     "name": "Teacher Shop",
@@ -37,7 +57,8 @@ const dummyData = [
       "self": {
         "href": "customers/_oq2"
       }
-    }
+    },
+    "lastActivity": 1444459774724
   },
   {
     "name": "Marafiki",
@@ -61,7 +82,8 @@ const dummyData = [
       "self": {
         "href": "customers/_RrO"
       }
-    }
+    },
+    "lastActivity": 1444459774724
   },
   {
     "name": "Saidi Shop",
@@ -85,7 +107,8 @@ const dummyData = [
       "self": {
         "href": "customers/_QnR"
       }
-    }
+    },
+    "lastActivity": 1444459774724
   },
   {
     "name": "Franco Shop",
@@ -109,7 +132,8 @@ const dummyData = [
       "self": {
         "href": "customers/_geG"
       }
-    }
+    },
+    "lastActivity": 1444459774724
   },
   {
     "name": "Baraka Shop",
@@ -133,7 +157,8 @@ const dummyData = [
       "self": {
         "href": "customers/_57n"
       }
-    }
+    },
+    "lastActivity": 1444459774724
   },
   {
     "name": "Robert",
@@ -157,7 +182,8 @@ const dummyData = [
       "self": {
         "href": "customers/_KAq"
       }
-    }
+    },
+    "lastActivity": 1444459774724
   },
   {
     "name": "Abiolla",
@@ -181,7 +207,8 @@ const dummyData = [
       "self": {
         "href": "customers/_Wne"
       }
-    }
+    },
+    "lastActivity": 1444459774724
   }
 ]
 
@@ -222,11 +249,9 @@ const CustomersCollection = React.createClass({
     const data = dummyData
     const { collapsed } = this.state
 
-    console.log(JSON.stringify(this.props.data.slice(0, 7), null, 2))
-
     const columns = collapsed 
-        ? ['name', 'phone', 'area', 'priceCategory', 'location']
-        : ['name', 'address', 'phone', 'area', 'priceCategory', 'location']
+        ? ['name', 'area', 'priceCategory', 'lastActivity']
+        : ['name', 'address', 'phone', 'area', 'priceCategory', 'location', 'lastActivity']
     const labels = collapsed 
         ? {
             'name'          : 'Name',
@@ -234,7 +259,8 @@ const CustomersCollection = React.createClass({
             'phone'         : 'Phone',
             'area'          : 'Area',
             'priceCategory' : 'Price cat.',
-            'location'      : 'Location'
+            'location'      : 'Location',
+            'lastActivity'  : 'Last activity'
           }
         : {
             'name'          : 'Name',
@@ -242,7 +268,8 @@ const CustomersCollection = React.createClass({
             'phone'         : 'Phone number',
             'area'          : 'Area',
             'priceCategory' : 'Price category',
-            'location'      : 'Location'
+            'location'      : 'Location',
+            'lastActivity'  : 'Last activity'
           }
     return (
       <div>
@@ -254,7 +281,8 @@ const CustomersCollection = React.createClass({
           ref              = 'grid'
           data             = {data}
           customComponents = {{
-            'location' : Component 
+            'location'     : LocationButton,
+            'lastActivity' : TimeComponent
           }}
           columns          = {columns}
           labels           = {labels}

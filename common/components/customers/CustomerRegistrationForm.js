@@ -43,7 +43,7 @@ const CustomerRegistrationForm = React.createClass({
   render() {
     const { fields : { name, address, tin, phone, area, priceCategory, latitude, longitude }, handleSubmit, areas, priceCategories } = this.props
     return (
-      <div>
+      <form onSubmit={handleSubmit}>
         <Input {...name}
           type        = 'text'
           help        = {this.hint('name')}
@@ -146,14 +146,14 @@ const CustomerRegistrationForm = React.createClass({
         )}
         <hr />
         <ButtonGroup>
-          <Button bsStyle='primary'>
+          <Button onClick={handleSubmit} bsStyle='primary'>
             <Glyphicon glyph='ok' />Save
           </Button>
           <Button onClick={this.props.resetForm} bsStyle='default'>
             Reset
           </Button>
         </ButtonGroup>
-      </div>
+      </form>
     )
   }
 })

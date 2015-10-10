@@ -6,28 +6,36 @@ import { Input }
 
 const drivers = [
   {
+    id      : 'drivers/1',
     name    : 'Abdul',
     vehicle : 'abc-123'
   },
   {
+    id      : 'drivers/2',
     name    : 'Baraka',
     vehicle : 'abc-123'
   },
   {
+    id      : 'drivers/3',
     name    : 'Deo',
     vehicle : 'abc-123'
   },
   {
+    id      : 'drivers/4',
     name    : 'Ernest',
     vehicle : 'abc-123'
   },
   {
+    id      : 'drivers/5',
     name    : 'George',
     vehicle : 'abc-123'
   }
 ]
 
 const DriversCollection = React.createClass({
+  handleRowSelected(item) {
+    location.hash = item.id
+  },
   handleFilterChange(event) {
     this.refs.grid.filterBy(event.target.value)
   },
@@ -47,6 +55,7 @@ const DriversCollection = React.createClass({
             'name'    : 'Name',
             'vehicle' : 'Vehicle'
           }}
+          onRowSelected   = {this.handleRowSelected}
           data            = {drivers} />
       </div>
     )

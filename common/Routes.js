@@ -12,6 +12,8 @@ import { Tabs, Tab, Panel, Breadcrumb, BreadcrumbItem }
   from 'react-bootstrap'
 import { initialize } 
   from 'redux-form'
+import { createResource }
+  from './js/deviceActions'
 
 export const RouteProductItem = React.createClass({
   getInitialState() {
@@ -107,7 +109,7 @@ export const RouteCustomerItem = React.createClass({
             {customer.name}
           </BreadcrumbItem>
         </Breadcrumb>
-        <CustomerView customer={customer} />
+        <CustomerView dashboard={this.props.dashboard} customer={customer} />
       </Panel>
     ) : (
       <span />
@@ -137,6 +139,10 @@ export const RouteCustomers = React.createClass({
   componentWillUnmount() {
     this.props.device.removeListener('change', this.fetchCustomers)
   },
+  handleSubmit(data) {
+    console.log(data)
+    this.props.device.run(createResource(data, 'customers'))
+  },
   render() {
     const { key, customers } = this.state
     return (
@@ -155,7 +161,7 @@ export const RouteCustomers = React.createClass({
           </Tab>
           <Tab eventKey={2} title='Register new customer'>
             <Panel>
-              <CustomerRegistrationForm />
+              <CustomerRegistrationForm onSubmit={this.handleSubmit} />
             </Panel>
           </Tab>
           <Tab eventKey={3} title='Pending registrations'>
