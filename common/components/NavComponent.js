@@ -1,5 +1,7 @@
 import React from 'react'
 
+import { connect } 
+  from 'react-redux'
 import { Nav, NavItem, Navbar, NavBrand, CollapsibleNav, Glyphicon }
   from 'react-bootstrap'
 
@@ -21,7 +23,11 @@ const NavComponent = React.createClass({
     location.hash = item.substr(1)
   },
   render() {
-    const { menuItems } = this.props
+
+    console.log(this.props)
+
+    const { menuItems, active, remote } = this.props
+
     return (
       <div>
         <Navbar
@@ -58,7 +64,7 @@ const NavComponent = React.createClass({
                 eventKey  = {1}
                 className = 'btn-sync'
                 href      = '#'
-                onClick   = {e => { e.preventDefault() }}>
+                onClick   = {e => { e.preventDefault(); remote.sync() }}>
                 <Glyphicon glyph='refresh' />&nbsp;Sync
               </NavItem>
             </Nav>
@@ -77,9 +83,21 @@ const NavComponent = React.createClass({
             })}
           </ul>
         </div>
+
+        <div style={{
+          position : 'absolute',
+          top      : '70px'
+        }}>
+          active : {'' + active}
+        </div>
+
       </div>
     )
   }
 })
 
-export default NavComponent
+function inject(state) {
+  return state.request
+}
+
+export default connect(inject)(NavComponent) 

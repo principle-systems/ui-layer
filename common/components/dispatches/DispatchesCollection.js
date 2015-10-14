@@ -1,5 +1,6 @@
 import React from 'react'
 import Grid  from '../Grid'
+import DispatchView from './DispatchView'
 
 import { Input, Modal, Button }
   from 'react-bootstrap'
@@ -43,32 +44,33 @@ const mockup = [
 ]
 
 const DispatchesCollection = React.createClass({
-  getInitialState() {
-    return {
-      dispatch : null
-    }
-  },
+//  getInitialState() {
+//    return {
+//      dispatch : null
+//    }
+//  },
   handleFilterChange(event) {
     this.refs.grid.filterBy(event.target.value)
   },
   handleRowSelected(dispatch) {
-    this.setState({dispatch})
+    //this.setState({dispatch})
+    location.hash = dispatch.id
   },
-  hideModal() {
-    this.setState({
-      dispatch : null
-    })
-  },
+//  hideModal() {
+//    this.setState({
+//      dispatch : null
+//    })
+//  },
   render() {
-    const { dispatch } = this.state
     return (
       <div>
+        {/*
         <Modal show={!!dispatch} onHide={this.hideModal}>
           <Modal.Header closeButton={true}>
             <Modal.Title>Dispatch details</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            dispatch info
+            <DispatchView />
           </Modal.Body>
           <Modal.Footer>
             <Button block bsStyle='primary' onClick={this.hideModal}>
@@ -76,6 +78,7 @@ const DispatchesCollection = React.createClass({
             </Button>
           </Modal.Footer>
         </Modal>
+        */}
         <Input 
           placeholder     = 'Filter results'
           onChange        = {this.handleFilterChange}

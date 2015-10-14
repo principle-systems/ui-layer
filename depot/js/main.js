@@ -1,5 +1,6 @@
 import React                    from 'react'
 import Router                   from 'react-router'
+import $                        from 'jquery'
 import NavComponent             from '../../common/components/NavComponent'
 import AddStockForm             from '../../common/components/stock/AddStockForm'
 import StockSummary             from '../../common/components/stock/StockSummary'
@@ -7,11 +8,13 @@ import StockActivityView        from '../../common/components/stock/StockActivit
 import StockCheckForm           from '../../common/components/stock/StockCheckForm'
 import StockDamageReportForm    from '../../common/components/stock/StockDamageReportForm'
 import DispatchesCollection     from '../../common/components/dispatches/DispatchesCollection'
+import DispatchView             from '../../common/components/dispatches/DispatchView'
 import OrderQueueingComponent   from '../../depot/components/queueing/OrderQueueingComponent'
 import DriversCollection        from '../../common/components/drivers/DriversCollection'
 import DriverView               from '../../common/components/drivers/DriverView'
 import PageWrapper              from '../../common/components/PageWrapper'
-import Device                   from '../../common/js/device'
+import SyncComponent            from '../../common/components/SyncComponent'
+import Device, { SyncHandler }  from '../../common/js/device'
 import app                      from './reducers'
 
 import { Route, RouteHandler }  
@@ -25,6 +28,20 @@ import { Tabs, Tab, Panel }
 
 const store  = createStore(app)
 const device = new Device('depot')
+const remote = new SyncHandler(device, store)
+
+const RouteDispatchItem = React.createClass({
+  render() {
+    return (
+      <Panel 
+        className   = 'panel-fill'
+        bsStyle     = 'primary'
+        header      = 'Dispatches'>
+        <DispatchView />
+      </Panel>
+    )
+  }
+})
 
 const RouteDispatches = React.createClass({
   getInitialState() {
@@ -183,7 +200,8 @@ const Handler = React.createClass({
   render() {
     return (
       <div id='wrapper'>
-        <NavComponent menuItems={[
+        <SyncComponent />
+        <NavComponent remote={remote} menuItems={[
           {
             'label' : 'Queueing',
             'href'  : '#queueing'
@@ -215,12 +233,13 @@ const Handler = React.createClass({
 
 const routes = (
   <Route handler={Handler}>
-    <Route path ='dispatches'          handler={RouteDispatches}  />
-    <Route path ='stock'               handler={RouteStock}       />
-    <Route path ='drivers/:id'         handler={RouteDriversItem} />
-    <Route path ='drivers'             handler={RouteDrivers}     />
-    <Route path ='queueing'            handler={RouteQueueing}    />
-    <Route path ='performance'         handler={RoutePerformance} />
+    <Route path ='dispatches/:id'      handler={RouteDispatchItem} />
+    <Route path ='dispatches'          handler={RouteDispatches}   />
+    <Route path ='stock'               handler={RouteStock}        />
+    <Route path ='drivers/:id'         handler={RouteDriversItem}  />
+    <Route path ='drivers'             handler={RouteDrivers}      />
+    <Route path ='queueing'            handler={RouteQueueing}     />
+    <Route path ='performance'         handler={RoutePerformance}  />
   </Route>
 )
 
@@ -231,4 +250,20 @@ Router.run(routes, Router.HashLocation, (Root, routerState) => {
     </Provider>,
     document.getElementById('main')
   )
+})
+
+// ---
+
+$.ajax({
+  type        : 'POST',
+  url         : 'http://localhost:8081/reset',
+  data        : JSON.stringify({ node : 'depot' }),
+  contentType : 'application/json',
+  dataType    : 'json',
+  success : () => {
+    localStorage.clear()
+    //remote.sync(resp => {
+    //  console.log(resp)
+    //})
+  }
 })

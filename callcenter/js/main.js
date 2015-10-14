@@ -1,10 +1,12 @@
 import React                    from 'react'
 import Router                   from 'react-router'
+import $                        from 'jquery'
 import NavComponent             from '../../common/components/NavComponent'
 import PageWrapper              from '../../common/components/PageWrapper'
 import ComplaintsCollection     from '../../common/components/complaints/ComplaintsCollection'
 import TasksCollection          from '../../common/components/tasks/TasksCollection'
 import NotificationManager      from '../../common/components/NotificationManager'
+import SyncComponent            from '../../common/components/SyncComponent'
 import Device                   from '../../common/js/device'
 import app                      from './reducers'
 
@@ -21,6 +23,7 @@ import { RouteProductItem, RouteCustomerEdit, RouteCustomerItem, RouteCustomers,
 
 const store  = createStore(app)
 const device = new Device('depot')
+const remote = new SyncHandler(device, store)
 
 const RouteOrderItem = React.createClass({
   render() {
@@ -82,7 +85,7 @@ const Handler = React.createClass({
     return (
       <div id='wrapper'>
         <NotificationManager device={device} />
-        <NavComponent menuItems={[
+        <NavComponent remote={remote} menuItems={[
           {
             'label' : 'Customers',
             'href'  : '#customers'

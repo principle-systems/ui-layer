@@ -1,15 +1,11 @@
-import Device, { StorageItem } from '../js/device'
+import Device, { StorageItem } from '../../common/js/device'
 
 class CreateResource {
 
   constructor(device, payload) {
     this.device = device
-    let { data, resource } = payload
-    if (!data.id && resource) {
-      data.id = `${resource}/${device.generateId()}`
-    }
-    this.data = data
-    this.id = data.id
+    this.data = payload.data
+    this.id = payload.data.id
   }
 
   up() {

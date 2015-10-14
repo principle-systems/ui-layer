@@ -1,11 +1,13 @@
 import React                    from 'react'
 import Router                   from 'react-router'
+import $                        from 'jquery'
 import NavComponent             from '../../common/components/NavComponent'
 import PageWrapper              from '../../common/components/PageWrapper'
 import ComplaintsCollection     from '../../common/components/complaints/ComplaintsCollection'
 import TasksCollection          from '../../common/components/tasks/TasksCollection'
 import NotificationManager      from '../../common/components/NotificationManager'
-import Device                   from '../../common/js/device'
+import SyncComponent            from '../../common/components/SyncComponent'
+import Device, { SyncHandler }  from '../../common/js/device'
 import app                      from './reducers'
 
 import CreateResource from '../../common/commands/CreateResource'
@@ -26,6 +28,7 @@ import { Navbar, CollapsibleNav, NavItem, Nav, NavBrand }
 
 const store  = createStore(app)
 const device = new Device('depot')
+const remote = new SyncHandler(device, store)
 
 const RouteOrderItem = React.createClass({
   render() {
@@ -118,7 +121,8 @@ const Handler = React.createClass({
     return (
       <div id='wrapper'>
         <NotificationManager device={device} />
-        <NavComponent menuItems={[
+        <SyncComponent />
+        <NavComponent remote={remote} menuItems={[
           {
             'label' : 'Customers',
             'href'  : '#customers'
@@ -198,4 +202,20 @@ Router.run(routes, Router.HashLocation, (Root, routerState) => {
     </Provider>,
     document.getElementById('main')
   )
+})
+
+// ---
+
+$.ajax({
+  type        : 'POST',
+  url         : 'http://localhost:8081/reset',
+  data        : JSON.stringify({ node : 'depot' }),
+  contentType : 'application/json',
+  dataType    : 'json',
+  success : () => {
+    localStorage.clear()
+    //remote.sync(resp => {
+    //  console.log(resp)
+    //})
+  }
 })
