@@ -26,6 +26,9 @@ import { Provider }
 import { Tabs, Tab, Panel }
   from 'react-bootstrap'
 
+import { createResource, destroyResource, updateResource, registerStockMovement, addLastItemToCollection, addItemToCollection, removeItemFromCollection, transaction }
+  from '../../common/js/deviceActions'
+
 const store  = createStore(app)
 const device = new Device('depot')
 const remote = new SyncHandler(device, store)
@@ -262,8 +265,57 @@ $.ajax({
   dataType    : 'json',
   success : () => {
     localStorage.clear()
-    //remote.sync(resp => {
-    //  console.log(resp)
-    //})
+
+
+    const stock = {
+      actual    : 10,
+      available : 10
+    }
+
+    device.run(createResource(stock, 'stock'))
+
+    //const order = { 
+    //  customer : 'customers/1',
+    //  items    : [
+    //    {
+    //      product  : 'products/1',
+    //      quantity : 7
+    //    }
+    //  ]
+    //}
+
+    //device.run(createResource(order, 'orders'))
+
+    //device.run(addLastItemToCollection('orders'))
+
+    //device.run(registerStockMovement({
+    //  action   : 'Order created' ,
+    //  type     : 'available'     ,
+    //  item     : { href : 'stock/1' },
+    //  quantity : -7
+    //}))
+  
+
+    /*
+    device.run(transaction([ 
+  
+      createResource(order, 'orders'),
+  
+      addLastItemToCollection('orders'),
+  
+      registerStockMovement({
+        action   : 'Order created' ,
+        type     : 'available'     ,
+        item     : 'stock/1'       ,
+        quantity : -7
+      }) 
+  
+    ]))
+    */
+
+    remote.sync(resp => {
+      console.log(resp)
+    })
+
   }
 })

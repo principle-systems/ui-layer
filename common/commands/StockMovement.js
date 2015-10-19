@@ -22,7 +22,7 @@ export default class StockMovement extends CreateResource {
 
   _adjust(positive) {
     const { type, item, quantity } = this.data
-    const stock = new StorageItem(item, this.device)
+    const stock = new StorageItem(item.href, this.device)
     stock.load()
     if (!stock.hasProperty('actual')) {
       stock.set('actual', 0)

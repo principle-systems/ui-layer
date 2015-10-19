@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username" : "sphere",
+    "password" : "sphere",
+    "database" : "sphere",
+    "host"     : "127.0.0.1",
+    "dialect"  : "postgres"
+  },
+  "test": {
+    "username" : "sphere",
+    "password" : "sphere",
+    "database" : "sphere",
+    "host"     : "127.0.0.1",
+    "dialect"  : "postgres"
+  },
+  "production" : {
+    "username" : "sphere",
+    "password" : "sphere",
+    "database" : "sphere",
+    "host"     : "127.0.0.1",
+    "dialect"  : "postgres"
+  }
+}

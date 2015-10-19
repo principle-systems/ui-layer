@@ -59,7 +59,7 @@ var _commonRoutes = require('../../common/Routes');
 
 var store = (0, _redux.createStore)(_reducers2['default']);
 var device = new _commonJsDevice2['default']('depot');
-var remote = new SyncHandler(device, store);
+var remote = new _commonJsDevice.SyncHandler(device, store);
 
 var RouteOrderItem = _react2['default'].createClass({
   displayName: 'RouteOrderItem',
@@ -972,7 +972,7 @@ var StockMovement = (function (_CreateResource) {
       var item = _data.item;
       var quantity = _data.quantity;
 
-      var stock = new _jsDevice.StorageItem(item, this.device);
+      var stock = new _jsDevice.StorageItem(item.href, this.device);
       stock.load();
       if (!stock.hasProperty('actual')) {
         stock.set('actual', 0);
@@ -3863,25 +3863,20 @@ var Command = {
   Up: 'up',
   Down: 'down',
   factory: function factory(action, device, payload) {
-    switch (action) {
-      case 'transaction':
-        return new _commandsTransaction2['default'](device, payload);
-      case 'create_resource':
-        return new _commandsCreateResource2['default'](device, payload);
-      case 'destroy_resource':
-        return new _commandsDestroyResource2['default'](device, payload);
-      case 'update_resource':
-        return new _commandsUpdateResource2['default'](device, payload);
-      case 'stock_movement':
-        return new _commandsStockMovement2['default'](device, payload);
-      case 'add_last_item_to_collection':
-        return new _commandsAddLastToCollection2['default'](device, payload);
-      case 'add_to_collection':
-        return new _commandsAddToCollection2['default'](device, payload);
-      case 'remove_from_collection':
-        return new _commandsRemoveFromCollection2['default'](device, payload);
-      default:
-        throw 'Unknown action: ' + action;
+    var actions = {
+      'transaction': _commandsTransaction2['default'],
+      'create_resource': _commandsCreateResource2['default'],
+      'destroy_resource': _commandsDestroyResource2['default'],
+      'update_resource': _commandsUpdateResource2['default'],
+      'stock_movement': _commandsStockMovement2['default'],
+      'add_last_item_to_collection': _commandsAddLastToCollection2['default'],
+      'add_to_collection': _commandsAddToCollection2['default'],
+      'remove_from_collection': _commandsRemoveFromCollection2['default']
+    };
+    if (!actions.hasOwnProperty(action)) {
+      throw 'Unknown action: ' + action;
+    } else {
+      return new actions[action](db, payload);
     }
   }
 };
@@ -3939,8 +3934,9 @@ var SyncHandler = (function () {
     value: function handleResponse(response) {
       var _this2 = this;
 
-      this.batch = response.actions;
-      if (this.batch.length > 50) {
+      this.rewind();
+      if (response.actions.length > 50) {
+        this.batch = response.actions;
         if (this.store) {
           this.store.dispatch(syncStart(this.batch.length));
         }
@@ -3953,15 +3949,27 @@ var SyncHandler = (function () {
       }
     }
   }, {
+    key: 'rewind',
+    value: function rewind() {
+      var _this3 = this;
+
+      this.device.updateItem('_device', function (context) {
+        while (context.commit.length) {
+          var command = context.commit.splice(-1)[0];
+          _this3.device.run(command, Command.Down, false);
+        }
+      }, { commit: [] });
+    }
+  }, {
     key: 'processBatch',
     value: function processBatch() {
-      var _this3 = this;
+      var _this4 = this;
 
       console.log('batch length : ' + this.batch.length);
       if (this.batch.length) {
         this.device.run(this.batch.splice(0, 1)[0], Command.Up, false);
         setTimeout(function () {
-          return _this3.processBatch();
+          return _this4.processBatch();
         }, 4);
         if (this.store) {
           this.store.dispatch(syncProgress(this.batch.length));
@@ -3976,7 +3984,7 @@ var SyncHandler = (function () {
   }, {
     key: 'sync',
     value: function sync(callback) {
-      var _this4 = this;
+      var _this5 = this;
 
       if (true === this.isBusy) {
         throw 'Device busy';
@@ -3997,16 +4005,16 @@ var SyncHandler = (function () {
         dataType: 'json',
         error: function error(e) {
           console.log(e);
-          if (_this4.store) {
-            _this4.store.dispatch(requestComplete());
+          if (_this5.store) {
+            _this5.store.dispatch(requestComplete());
           }
-          _this4.isBusy = false;
+          _this5.isBusy = false;
         },
         success: function success(resp) {
-          if (_this4.store) {
-            _this4.store.dispatch(requestComplete());
+          if (_this5.store) {
+            _this5.store.dispatch(requestComplete());
           }
-          _this4.handleResponse(resp);
+          _this5.handleResponse(resp);
           if ('function' === typeof callback) {
             callback(resp);
           }

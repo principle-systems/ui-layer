@@ -159,25 +159,20 @@ const Command = {
   Up   : 'up',
   Down : 'down',
   factory : (action, device, payload) => {
-    switch (action) {
-      case 'transaction':
-        return new Transaction(device, payload)
-      case 'create_resource':             
-        return new CreateResource(device, payload)
-      case 'destroy_resource':            
-        return new DestroyResource(device, payload)
-      case 'update_resource':             
-        return new UpdateResource(device, payload)
-      case 'stock_movement':              
-        return new StockMovement(device, payload)
-      case 'add_last_item_to_collection': 
-        return new AddLastToCollection(device, payload)
-      case 'add_to_collection':           
-        return new AddToCollection(device, payload)
-      case 'remove_from_collection':      
-        return new RemoveFromCollection(device, payload)
-      default:
-        throw `Unknown action: ${action}`
+    const actions = {
+      'transaction'                 : Transaction,
+      'create_resource'             : CreateResource,
+      'destroy_resource'            : DestroyResource,
+      'update_resource'             : UpdateResource,
+      'stock_movement'              : StockMovement,
+      'add_last_item_to_collection' : AddLastToCollection,
+      'add_to_collection'           : AddToCollection,
+      'remove_from_collection'      : RemoveFromCollection
+    }
+    if (!actions.hasOwnProperty(action)) {
+      throw `Unknown action: ${action}`
+    } else {
+      return new actions[action](device, payload)
     }
   }
 }
@@ -229,8 +224,9 @@ export class SyncHandler {
   }
 
   handleResponse(response) {
-    this.batch = response.actions
-    if (this.batch.length > 50) {
+    this.rewind()
+    if (response.actions.length > 50) {
+      this.batch = response.actions
       if (this.store) {
         this.store.dispatch(syncStart(this.batch.length))
       }
@@ -241,6 +237,15 @@ export class SyncHandler {
       })
       this.isBusy = false
     }
+  }
+
+  rewind() {
+    this.device.updateItem('_device', context => {
+      while (context.commit.length) {
+        const command = context.commit.splice(-1)[0]
+        this.device.run(command, Command.Down, false)
+      }
+    }, { commit : [] })
   }
 
   processBatch() {
@@ -388,7 +393,11 @@ class Device extends EventEmitter {
     Command.factory(action, this, payload)[method]()
     if (true === log) {
       this.updateItem('_device', context => {
-        context.commit.push(command)
+        context.commit.push({
+          timestamp : Date.now(),
+          action,
+          payload
+        })
       }, { commit : [] })
     }
   }

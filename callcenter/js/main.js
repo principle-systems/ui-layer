@@ -7,7 +7,7 @@ import ComplaintsCollection     from '../../common/components/complaints/Complai
 import TasksCollection          from '../../common/components/tasks/TasksCollection'
 import NotificationManager      from '../../common/components/NotificationManager'
 import SyncComponent            from '../../common/components/SyncComponent'
-import Device                   from '../../common/js/device'
+import Device, { SyncHandler }  from '../../common/js/device'
 import app                      from './reducers'
 
 import { Route, RouteHandler }  
